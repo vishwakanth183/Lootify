@@ -4,7 +4,7 @@ import React from "react";
 import { Box, Typography, useMediaQuery } from "@mui/material";
 import Image from "next/image";
 
-import { appColors } from "@/src/shared/appColor";
+import { appColors } from "@/src/shared/appColors";
 import { poppins } from "@/src/shared/appFonts";
 import { Center } from "@/src/shared/components/Customized-mui";
 

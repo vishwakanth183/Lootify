@@ -1,6 +1,6 @@
 import { Box } from "@mui/material";
 import { styled } from "@mui/material/styles";
-import { appColors } from "../appColor";
+import { appColors } from "../appColors";
 
 export const Center = styled(Box)(({ backgroundColor }) => ({
   display: "flex",
