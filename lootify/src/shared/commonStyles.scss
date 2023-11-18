@@ -1,0 +1,70 @@
+@use "base";
+
+/**for using dyamic fonts other than use custom url **/
+@import url("https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&family=Poppins:wght@400;500;600;700&display=swap");
+
+/**For sharing the center code between styles and 
+developers can adjust height and width based on need using the below dynamic center mixin **/
+%center {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+@mixin dynamicCenter($height, $width) {
+  @extend %center;
+  height: $height;
+  width: $width;
+}
+
+/** mixin for creating dynamic background color **/
+
+@mixin dynmaicBackgroundColor($color) {
+  background-color: $color;
+}
+
+/** mixin for creating dynamic text color **/
+@mixin dynmaicTextColor($color) {
+  color: $color;
+}
+
+/** for maintaining common root view across the pages **/
+.main {
+  @extend %center;
+  width: 100vw;
+  height: 100vh;
+}
+
+.primaryBackground {
+  @include dynmaicBackgroundColor(var(--primary-color));
+}
+
+.whiteBackground {
+  @include dynmaicBackgroundColor(var(--white));
+}
+
+.whitetext {
+  @include dynmaicTextColor(var(--white));
+  // font-family: var(--secondary-font);
+  // font-weight: 500;
+}
+
+.darkText {
+  @include dynmaicTextColor(var(--dark));
+}
+
+.primaryText {
+  @include dynmaicTextColor(var(--primary-color));
+}
+
+/** for mainataining desktop splash style **/
+.desktopSplash {
+  height: 200px;
+  width: 200px;
+}
+
+/** for mainatining mobile splash style **/
+.mobileSplash {
+  height: 100px;
+  width: 100px;
+}

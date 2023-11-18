@@ -1,0 +1,46 @@
+@use "../../base.scss";
+
+%rowdiv {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+}
+
+.navbar {
+  height: 8vh;
+  width: 100vw;
+  display: flex;
+  justify-content: space-between;
+  box-sizing: border-box;
+  position: absolute;
+  background: linear-gradient(
+    90deg,
+    rgba(86, 138, 218, 0.26) 0%,
+    rgba(84, 137, 218, 0.541667) 40.73%,
+    rgba(36, 109, 220, 0.229167) 72.44%,
+    #819cc6 99.99%,
+    #0b59d0 100%
+  );
+  box-shadow: 1px 6px 3.7px rgba(0, 0, 0, 0.25);
+}
+
+.leftnav {
+  @extend %rowdiv;
+  margin-left: 15px;
+}
+
+.rightnav {
+  @extend %rowdiv;
+}
+
+.navlogo {
+  height: 6vh;
+  width: 50px;
+}
+
+.navlinkbutton {
+  font-weight: 700;
+  margin-right: 30px;
+  //   text-shadow: 0px 2px 2.1px rgba(0, 0, 0, 0.25);
+}

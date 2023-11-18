@@ -1,0 +1,25 @@
+.menudrawer {
+  width: 300px;
+  height: 100vh;
+  background-color: white;
+}
+
+.menutopview {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: var(--dark);
+  height: 35vh;
+}
+
+.mobilenavlogo {
+  height: 6vh;
+  width: 50px;
+  margin-right: 5px;
+}
+
+.mobilemenulist {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}

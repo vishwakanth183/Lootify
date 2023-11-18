@@ -1,33 +1,23 @@
 "use client";
 
 import React from "react";
-import { Box, Typography, useMediaQuery } from "@mui/material";
+import { useMediaQuery } from "@mui/material";
 import Image from "next/image";
 
-import { appColors } from "@/src/shared/appColors";
-import { poppins } from "@/src/shared/appFonts";
-import { Center } from "@/src/shared/components/Customized-mui";
+import "../src/shared/commonStyles.scss";
 
 const LootifyRootPage = () => {
   // Variable to check the screensize
   const isDesktop = useMediaQuery("(min-width:600px)");
 
   return (
-    <Center>
+    <div className={"main primaryBackground"}>
       <Image
         src={require("../src/assets/images/applogo.svg")}
-        style={
-          isDesktop ? { height: 200, width: 200 } : { height: 100, width: 100 }
-        }
+        className={isDesktop ? "desktopSplash" : "mobileSplash"}
       />
-      <Typography
-        style={{ color: appColors.light }}
-        sx={{ fontFamily: poppins.style.fontFamily }}
-        variant="h1"
-      >
-        Lootify
-      </Typography>
-    </Center>
+      <h1 className="whitetext">Lootify</h1>
+    </div>
   );
 };
 
