@@ -1,0 +1,185 @@
+{
+  "products": [
+    {
+      "id": 1,
+      "image": "https://images.pexels.com/photos/14723250/pexels-photo-14723250.jpeg",
+      "name": "Product 1",
+      "price": 100.0,
+      "rating": 4.5
+    },
+    {
+      "id": 2,
+      "image": "https://images.pexels.com/photos/1294886/pexels-photo-1294886.jpeg",
+      "name": "Product 2",
+      "price": 200.0,
+      "rating": 4.0
+    },
+    {
+      "image": "https://images.pexels.com/photos/19090/pexels-photo.jpg",
+      "name": "Product 3",
+      "price": 150.0,
+      "rating": 5.0
+    },
+    {
+      "image": "https://images.pexels.com/photos/1647976/pexels-photo-1647976.jpeg",
+      "name": "Product 4",
+      "price": 75.0,
+      "rating": 3.5
+    },
+    {
+      "image": "https://images.pexels.com/photos/1335463/pexels-photo-1335463.jpeg",
+      "name": "Product 5",
+      "price": 125.0,
+      "rating": 4.0
+    },
+    {
+      "image": "https://images.pexels.com/photos/1504188/pexels-photo-1504188.jpeg",
+      "name": "Product 6",
+      "price": 225.0,
+      "rating": 5.0
+    },
+    {
+      "image": "https://images.pexels.com/photos/1006293/pexels-photo-1006293.jpeg",
+      "name": "Product 7",
+      "price": 175.0,
+      "rating": 4.5
+    },
+    {
+      "image": "https://images.pexels.com/photos/245240/pexels-photo-245240.jpeg",
+      "name": "Product 8",
+      "price": 100.0,
+      "rating": 3.0
+    },
+    {
+      "image": "https://images.pexels.com/photos/399159/pexels-photo-399159.jpeg",
+      "name": "Product 9",
+      "price": 150.0,
+      "rating": 4.0
+    },
+    {
+      "image": "https://images.pexels.com/photos/89778/strawberries-frisch-ripe-sweet-89778.jpeg",
+      "name": "Product 10",
+      "price": 250.0,
+      "rating": 5.0
+    },
+    {
+      "image": "https://images.pexels.com/photos/14723250/pexels-photo-14723250.jpeg",
+      "name": "Product 11",
+      "price": 125.0,
+      "rating": 4.5
+    },
+    {
+      "image": "https://images.pexels.com/photos/14723250/pexels-photo-14723250.jpeg",
+      "name": "Product 12",
+      "price": 200.0,
+      "rating": 3.5
+    },
+    {
+      "image": "https://images.pexels.com/photos/14723250/pexels-photo-14723250.jpeg",
+      "name": "Product 13",
+      "price": 175.0,
+      "rating": 4.0
+    },
+    {
+      "image": "https://images.pexels.com/photos/14723250/pexels-photo-14723250.jpeg",
+      "name": "Product 14",
+      "price": 150.0,
+      "rating": 5.0
+    },
+    {
+      "image": "https://images.pexels.com/photos/14723250/pexels-photo-14723250.jpeg",
+      "name": "Product 15",
+      "price": 100.0,
+      "rating": 3.0
+    },
+    {
+      "image": "https://images.pexels.com/photos/14723250/pexels-photo-14723250.jpeg",
+      "name": "Product 16",
+      "price": 75.0,
+      "rating": 4.5
+    },
+    {
+      "image": "https://images.pexels.com/photos/14723250/pexels-photo-14723250.jpeg",
+      "name": "Product 17",
+      "price": 125.0,
+      "rating": 3.5
+    },
+    {
+      "image": "https://images.pexels.com/photos/14723250/pexels-photo-14723250.jpeg",
+      "name": "Product 18",
+      "price": 225.0,
+      "rating": 4.0
+    },
+    {
+      "image": "https://images.pexels.com/photos/14723250/pexels-photo-14723250.jpeg",
+      "name": "Product 19",
+      "price": 175.0,
+      "rating": 5.0
+    },
+    {
+      "image": "https://images.pexels.com/photos/14723250/pexels-photo-14723250.jpeg",
+      "name": "Product 20",
+      "price": 100.0,
+      "rating": 3.5
+    },
+    {
+      "image": "https://images.pexels.com/photos/14723250/pexels-photo-14723250.jpeg",
+      "name": "Product 21",
+      "price": 150.0,
+      "rating": 4.0
+    },
+    {
+      "image": "https://images.pexels.com/photos/14723250/pexels-photo-14723250.jpeg",
+      "name": "Product 22",
+      "price": 250.0,
+      "rating": 5.0
+    },
+    {
+      "image": "https://images.pexels.com/photos/14723250/pexels-photo-14723250.jpeg",
+      "name": "Product 23",
+      "price": 125.0,
+      "rating": 4.5
+    },
+    {
+      "image": "https://images.pexels.com/photos/14723250/pexels-photo-14723250.jpeg",
+      "name": "Product 24",
+      "price": 200.0,
+      "rating": 3.5
+    },
+    {
+      "image": "https://images.pexels.com/photos/14723250/pexels-photo-14723250.jpeg",
+      "name": "Product 25",
+      "price": 175.0,
+      "rating": 4.0
+    },
+    {
+      "image": "https://images.pexels.com/photos/14723250/pexels-photo-14723250.jpeg",
+      "name": "Product 26",
+      "price": 150.0,
+      "rating": 5.0
+    },
+    {
+      "image": "https://images.pexels.com/photos/14723250/pexels-photo-14723250.jpeg",
+      "name": "Product 27",
+      "price": 100.0,
+      "rating": 3.0
+    },
+    {
+      "image": "https://images.pexels.com/photos/14723250/pexels-photo-14723250.jpeg",
+      "name": "Product 28",
+      "price": 150.0,
+      "rating": 4.0
+    },
+    {
+      "image": "https://images.pexels.com/photos/14723250/pexels-photo-14723250.jpeg",
+      "name": "Product 29",
+      "price": 250.0,
+      "rating": 5.0
+    },
+    {
+      "image": "https://images.pexels.com/photos/14723250/pexels-photo-14723250.jpeg",
+      "name": "Product 30",
+      "price": 125.0
+    }
+  ]
+}
