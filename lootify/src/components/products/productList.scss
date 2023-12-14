@@ -1,0 +1,178 @@
+.maincontainer {
+    display: flex;
+    flex-direction: column;
+    padding-top: 8vh;
+    background-color: white;
+    width: 100vw;
+    min-height: 100vh;
+}
+
+.searchview {
+    display: flex;
+    background-color: #ff6666;
+    height: 40px;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+
+}
+
+.inputprops {
+    background-color: white;
+    color: black;
+    height: 40px;
+}
+
+.inputfield {
+    width: 40%;
+    margin-top: 40px;
+}
+
+.mainview {
+    display: flex;
+    margin: 2%;
+    margin-top: 3%;
+    justify-content: space-between;
+}
+
+.filterview {
+    display: flex;
+    width: 20%;
+    height: fit-content;
+}
+
+.listview {
+    display: flex;
+    width: 78%;
+    flex-wrap: wrap;
+    height: fit-content;
+}
+
+.cardView {
+    width: 100%;
+    padding: 5%;
+}
+
+.divListTop {
+    margin-top: 10px;
+    display: flex;
+    width: 100%;
+    justify-content: space-between;
+}
+
+.divList {
+    margin-top: 10px;
+    display: flex;
+    width: 100%;
+    flex-direction: column;
+
+}
+
+.headingText {
+    font-weight: bold;
+}
+
+.checkBoxView {
+    display: flex;
+    margin-top: 3px;
+}
+
+.checkText {
+    margin-top: 8px;
+    font-size: 14px;
+}
+
+.sliderView {
+    width: 80%;
+    align-self: center;
+    margin-top: 8px
+}
+
+.resetStyle {
+    text-transform: none;
+    border-radius: 30px;
+    height: 20px;
+    width: 30px;
+    font-size: 12px;
+}
+
+.dividerStyle {
+    margin-top: 20px;
+}
+
+.image {
+    width: 200px;
+    height: 180px;
+    object-fit: contain;
+}
+
+.productNameView {
+    display: flex;
+    padding: 5px;
+    padding-left: 3%;
+    padding-right: 3%;
+    justify-content: space-between;
+}
+
+.productName {
+    font-weight: bold;
+    font-size: 14px;
+
+}
+
+.review {
+    font-size: 14px;
+}
+
+.star {
+    font-size: 16px;
+    margin-top: 1px;
+    color: gold;
+}
+
+.reviewView {
+    display: flex;
+
+}
+
+.productPriceView {
+    display: flex;
+    width: 80%;
+    justify-content: space-between;
+    padding-bottom: 5%;
+    padding-left: 4%;
+    padding-top: 2%;
+}
+
+.priceText {
+    font-weight: 600;
+}
+
+.comparePriceText {
+    font-weight: 600;
+    color: gray;
+    text-decoration: line-through;
+}
+
+.offerText {
+    background-color: #f0f0f5;
+    color: gray;
+    padding: 2px;
+    font-size: 14px;
+}
+
+.productBrand {
+    color: gray;
+    padding-left: 4%;
+}
+
+.listCard {
+    height: 280px;
+    width: 200px;
+    margin: 1%;
+}
+
+.listCard:hover {
+    color: red;
+    z-index: 9;
+}

@@ -1,0 +1,113 @@
+.mainContainer {
+    display: flex;
+    padding-top: 8vh;
+    width: 100vw;
+    height: 100vh;
+    background-color: white;
+}
+
+.subviewRight {
+    display: flex;
+    padding-top: 2%;
+    width: 50%;
+    height: 100%;
+    flex-direction: column;
+
+}
+
+.imageView {
+    width: 80%;
+    height: 80%;
+}
+
+.subviewLeft {
+    display: flex;
+    padding-top: 2%;
+    width: 50%;
+    height: 100%;
+    justify-content: center;
+    align-items: center;
+
+}
+
+.registerview {
+    display: flex;
+    width: 100%;
+    justify-content: flex-end;
+    margin: 3%;
+
+}
+
+.textView {
+    font-size: 16px;
+    color: gray;
+    margin: 2%;
+}
+
+.registertext {
+    color: blue;
+}
+
+.fieldview {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 60%;
+    height: 100%;
+    align-self: center;
+}
+
+.hederTxt {
+    font-size: 30px;
+    color: blue;
+}
+
+.textfield {
+    width: 100%;
+    margin-top: 5%;
+}
+
+.nametextfield {
+    width: 48%;
+    margin-top: 5%;
+}
+
+.button {
+    width: 100%;
+    margin-top: 5%;
+    background-color: skyblue;
+}
+
+.forgotPassword {
+    margin-top: 3%;
+    color: grey;
+    align-self: flex-end;
+}
+
+.text {
+    color: gray;
+
+}
+
+.formView {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+.nameview {
+    display: flex;
+    justify-content: space-between;
+}
+
+@media screen and (max-width:600px) {
+    .subviewRight {
+        width: 100%;
+    }
+
+    .fieldview {
+        width: 80%;
+        height: 100%;
+    }
+}

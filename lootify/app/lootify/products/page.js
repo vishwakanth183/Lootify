@@ -1,12 +1,12 @@
 import React from "react";
-import "../../../src/shared/commonStyles.scss";
+import ProductList from '../../../src/components/products/productList'
 
-const ProductList = () => {
+const ProductListScreen = () => {
   return (
-    <div className={"main whiteBackground"}>
-      <h1 className="darktext">Layout ProductList</h1>
+    <div>
+      <ProductList />
     </div>
   );
 };
 
-export default ProductList;
+export default ProductListScreen;

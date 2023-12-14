@@ -1,10 +1,10 @@
 import React from "react";
 import "../../../src/shared/commonStyles.scss";
-
+import SignIn from '../../../src/components/auth/signin'
 const Signin = () => {
   return (
-    <div className={"main whiteBackground"}>
-      <h1 className="darktext">Layout Signin</h1>
+    <div>
+      <SignIn />
     </div>
   );
 };
