@@ -1,0 +1,20 @@
+@use "./base.scss";
+
+.appBarPadding {
+  margin-top: 10vh;
+}
+
+.fullheight {
+  height: 90vh;
+  width: 100vw;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: var(--white);
+}
+
+// .appbarStyle {
+//   height: "10vh";
+//   display: "flex";
+//   justify-content: center;
+// }

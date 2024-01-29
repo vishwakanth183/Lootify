@@ -1,0 +1,8 @@
+@use "../../shared/scss/base.scss";
+
+.mainProductListView {
+  display: flex;
+  height: 100vh;
+  width: 100vw;
+  background-color: var(--white);
+}
