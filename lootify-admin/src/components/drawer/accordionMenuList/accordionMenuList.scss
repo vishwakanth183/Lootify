@@ -1,0 +1,15 @@
+@use "../../../shared/scss/base.scss";
+
+.highlightedList {
+  background-color: var(--menu-color);
+  color: white;
+}
+
+.highlightedList:hover {
+  background-color: var(--menu-color);
+}
+
+.highlightedSubmenu {
+  color: var(--submenu-color);
+  font-weight: 900 !important;
+}

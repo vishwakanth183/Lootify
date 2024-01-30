@@ -3,8 +3,8 @@
 import React from "react";
 import ProductListComponent from "@/src/components/products/allproduct/productListComponent";
 
-const ProductListRoute = () => {
+const AllProductsList = () => {
   return <ProductListComponent />;
 };
 
-export default ProductListRoute;
+export default AllProductsList;

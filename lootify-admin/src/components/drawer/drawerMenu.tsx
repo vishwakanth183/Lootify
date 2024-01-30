@@ -1,18 +1,12 @@
 import React from "react";
-import {
-  AppBar,
-  IconButton,
-  Toolbar,
-  Typography,
-  Box,
-  Drawer,
-} from "@mui/material";
+import { AppBar, IconButton, Toolbar, Typography, Box, Drawer, Divider } from "@mui/material";
 import MenuIcon from "@mui/icons-material/Menu";
 
 // Custom import
 import "../../shared/scss/appbar.scss";
 import { ChevronLeft } from "@mui/icons-material";
 import Image from "next/image";
+import AccordionMenuList from "./accordionMenuList/accordionMenuList";
 
 const DrawerMenu = () => {
   const drawerWidth = 310;
@@ -37,15 +31,8 @@ const DrawerMenu = () => {
           display: "flex",
           alignItems: "center",
           backgroundColor: "black",
-        }}
-      >
-        <IconButton
-          color="inherit"
-          aria-label="open drawer"
-          onClick={handleDrawerOpen}
-          edge="start"
-          sx={{ ml: 2, ...(open && { display: "none" }) }}
-        >
+        }}>
+        <IconButton color="inherit" aria-label="open drawer" onClick={handleDrawerOpen} edge="start" sx={{ ml: 2, ...(open && { display: "none" }) }}>
           <MenuIcon />
         </IconButton>
         <Toolbar>Lootify Admin</Toolbar>
@@ -63,8 +50,7 @@ const DrawerMenu = () => {
         }}
         variant="temporary"
         anchor="left"
-        open={open}
-      >
+        open={open}>
         <Box
           display={"flex"}
           flexDirection={"row"}
@@ -72,24 +58,13 @@ const DrawerMenu = () => {
           sx={{
             paddingTop: 2,
             paddingBottom: 2,
-            backgroundColor: "black",
-          }}
-        >
+            backgroundColor: "white",
+          }}>
           {/* Logo */}
-          <Image
-            alt="app-logo"
-            src={require("../../assets/images/applogo.svg")}
-            style={{ height: 100, width: 100 }}
-          />
+          <Image alt="app-logo" src={require("../../assets/images/applogo.svg")} style={{ height: 100, width: 100 }} />
 
           {/* User name and welcome message */}
-          <Box
-            display={"flex"}
-            flexDirection={"column"}
-            alignItems={"flex-end"}
-            justifyContent={"end"}
-            sx={{ mr: 3, color: "white" }}
-          >
+          <Box display={"flex"} flexDirection={"column"} alignItems={"flex-end"} justifyContent={"end"} sx={{ mr: 3, color: "black" }}>
             <h6>
               <strong>Welcome</strong>
             </h6>
@@ -103,16 +78,18 @@ const DrawerMenu = () => {
               width: drawerWidth,
               display: "flex",
               justifyContent: "flex-end",
-            }}
-          >
+            }}>
             <IconButton onClick={handleDrawerClose}>
-              <ChevronLeft htmlColor="white" />
+              <ChevronLeft htmlColor="black" />
             </IconButton>
           </Box>
         </Box>
-      </Drawer>
 
-      {/* List items view */}
+        <Divider sx={{ color: "red", mb: 0.1 }} />
+
+        {/* List items view */}
+        <AccordionMenuList />
+      </Drawer>
     </Box>
   );
 };
