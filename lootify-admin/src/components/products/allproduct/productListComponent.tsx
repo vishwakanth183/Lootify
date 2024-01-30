@@ -1,18 +1,8 @@
-import React, { useEffect, FC } from "react";
-import { useSelector } from "react-redux";
-
-// custom imports
-import { AppDispatch, RootState } from "@/app/redux/store";
-import "./productListComponent.scss";
+import React from "react";
+import "../../../shared/scss/appbar.scss";
 
 const ProductListComponent = () => {
-  const productList = useSelector((state: RootState) => state.productList);
-
-  useEffect(() => {
-    console.log("ProductList", productList);
-  }, [productList]);
-
-  return <div className="mainProductListView">ProductList</div>;
+  return <div className="appBarPadding fullheight">ProductList Component</div>;
 };
 
 export default ProductListComponent;

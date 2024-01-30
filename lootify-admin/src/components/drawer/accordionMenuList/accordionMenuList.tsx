@@ -105,7 +105,6 @@ const AccordionMenuList = ({}) => {
   const checkandnavigate = () => {
     let pathnameArray = pathname.split("/");
     const pathArrayLength = pathnameArray.length;
-    // console.log("array", pathnameArray);
     let currentMainMenu;
     let currentSubMenu;
 
@@ -118,26 +117,17 @@ const AccordionMenuList = ({}) => {
 
     if (common.subMenuIndex == undefined) {
       if (currentMainMenu != menuData[common.mainMenuIndex as number].mainmenu) {
-        if (pathArrayLength == 4) {
-          pathnameArray[pathArrayLength - 1] = menuData[common.mainMenuIndex as number].mainmenu;
-        } else {
-          pathnameArray = pathnameArray.splice(pathArrayLength - 1, 1);
-          const newPathNameArrayLength = pathnameArray.length;
-          pathnameArray[newPathNameArrayLength] = menuData[common.mainMenuIndex as number].mainmenu;
-        }
+        pathnameArray = pathnameArray.slice(0, 3);
+        pathnameArray.push(menuData[common.mainMenuIndex as number].mainmenu);
         const newPath = pathnameArray.join("/");
         router.push(newPath);
         // console.log("navigate to", menuData[common.mainMenuIndex as number].mainmenu);
       }
     } else {
       if (currentMainMenu != menuData[common.mainMenuIndex as number].mainmenu || currentSubMenu != menuData[common.mainMenuIndex as number].submenu[common.subMenuIndex]) {
-        if (pathArrayLength == 4) {
-          pathnameArray[pathArrayLength - 1] = menuData[common.mainMenuIndex as number].mainmenu;
-          pathnameArray.push(menuData[common.mainMenuIndex as number].submenu[common.subMenuIndex]);
-        } else {
-          pathnameArray[pathArrayLength - 2] = menuData[common.mainMenuIndex as number].mainmenu;
-          pathnameArray[pathArrayLength - 1] = menuData[common.mainMenuIndex as number].submenu[common.subMenuIndex];
-        }
+        pathnameArray = pathnameArray.slice(0, 3);
+        pathnameArray.push(menuData[common.mainMenuIndex as number].mainmenu);
+        pathnameArray.push(String(menuData[common.mainMenuIndex as number].submenu[common.subMenuIndex]).replace(/\s/g, ""));
         const newPath = pathnameArray.join("/");
         router.push(newPath);
         // console.log("navigate to submenu", menuData[common.mainMenuIndex as number].mainmenu, menuData[common.mainMenuIndex as number].submenu[common.subMenuIndex]);
