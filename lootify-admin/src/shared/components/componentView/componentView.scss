@@ -1,0 +1,10 @@
+.componentView {
+  height: 80vh;
+  background-color: red($color: #000000);
+}
+
+.fullView {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}

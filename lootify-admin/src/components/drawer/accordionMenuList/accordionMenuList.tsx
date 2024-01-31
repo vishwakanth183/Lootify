@@ -10,36 +10,9 @@ import "./accordionMenuList.scss";
 import GenerateMenuIcon from "./generateMenuIcon";
 import { AppDispatch, RootState } from "@/app/redux/store";
 import { changeSelectedMenu } from "@/app/redux/slices/common/common";
+import { menuData } from "./menuList";
 
 const AccordionMenuList = ({}) => {
-  // Menu values
-  const menuData = [
-    {
-      mainmenu: "dashboard",
-      submenu: [],
-    },
-    {
-      mainmenu: "products",
-      submenu: ["all products", "restore products", "options"],
-    },
-    {
-      mainmenu: "orders",
-      submenu: ["orderlist"],
-    },
-    {
-      mainmenu: "marketing",
-      submenu: ["templates", "discount marketing"],
-    },
-    // {
-    //   mainmenu: "logout",
-    //   submenu: [],
-    // },
-    {
-      mainmenu: "settings",
-      submenu: [],
-    },
-  ];
-
   // Variable to hold redux appdispatch
   const dispatch = useDispatch<AppDispatch>();
 

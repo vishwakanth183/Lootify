@@ -1,4 +1,4 @@
-import { createTheme, ThemeProvider } from "@mui/material/styles";
+import { createTheme } from "@mui/material/styles";
 import { Poppins } from "next/font/google";
 
 const poppins = Poppins({ weight: ["100", "200", "400", "900"], subsets: ["latin"] });

@@ -1,6 +1,7 @@
 "use client";
 
 import { Poppins } from "next/font/google";
+import ".././src/shared/scss/appbar.scss";
 import "./globals.css";
 import ReduxLayout from "./ReduxLayout";
 

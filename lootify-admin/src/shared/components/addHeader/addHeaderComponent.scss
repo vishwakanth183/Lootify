@@ -1,0 +1,27 @@
+.headerMainView {
+  //   height: 8vh;
+  margin-top: 10vh;
+  //   align-items: center;
+}
+
+.displayEnd {
+  display: flex;
+  align-self: center;
+  justify-content: space-between;
+}
+
+.headerPadding {
+  padding-top: 15px;
+  padding-right: 10px;
+  padding-left: 30px;
+}
+
+.headerTitle {
+  font-weight: lighter !important;
+}
+
+.actionButtonView {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+}
