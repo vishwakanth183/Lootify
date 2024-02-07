@@ -8,7 +8,7 @@ import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
 
 import "../../../../shared/scss/appbar.scss";
-import "./optionsListComponent.scss";
+import "./optionsListComponent.module.scss";
 import optionsData from "./dummy-data.json";
 import AddHeaderComponent from "@/src/shared/components/addHeader/addHeaderComponent";
 import ComponentView from "@/src/shared/components/componentView/componentView";
