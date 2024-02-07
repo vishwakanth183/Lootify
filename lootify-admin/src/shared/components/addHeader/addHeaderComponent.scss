@@ -17,11 +17,18 @@
 }
 
 .headerTitle {
-  font-weight: lighter !important;
+  font-weight: 200 !important;
 }
 
 .actionButtonView {
   display: flex;
   flex-direction: row;
   justify-content: space-around;
+}
+
+.headingRowView {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
 }

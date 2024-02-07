@@ -10,7 +10,7 @@ import "./accordionMenuList.scss";
 import GenerateMenuIcon from "./generateMenuIcon";
 import { AppDispatch, RootState } from "@/app/redux/store";
 import { changeSelectedMenu } from "@/app/redux/slices/common/common";
-import { menuData } from "./menuList";
+import { getMenuIndexBasedonRoute, menuData } from "./menuList";
 
 const AccordionMenuList = ({}) => {
   // Variable to hold redux appdispatch
@@ -77,11 +77,32 @@ const AccordionMenuList = ({}) => {
   // Check and navigate routes
   const checkandnavigate = () => {
     let pathnameArray = pathname.split("/");
+    // console.log("pathname array", pathnameArray);
     const pathArrayLength = pathnameArray.length;
     let currentMainMenu;
     let currentSubMenu;
 
-    if (pathnameArray.length == 4) {
+    if (pathnameArray.length > 5) {
+      let targetPathName = "drawermenu";
+      let targetIndex = pathnameArray.indexOf(targetPathName);
+      if (targetIndex != -1) {
+        let targetPathArray = pathnameArray.slice(targetIndex + 1);
+        let routeMenuName = targetPathArray[0];
+        let routeSubMenuName;
+        if (targetPathArray.length > 1) routeSubMenuName = targetPathArray[1];
+
+        // console.log("routeMenuName ,routeMenuName", routeMenuName, routeSubMenuName);
+
+        const { mainMenuIndex, subMenuIndex } = getMenuIndexBasedonRoute({ routeMenuName: routeMenuName, routeSubMenuName: routeSubMenuName });
+        if (mainMenuIndex == common.mainMenuIndex && subMenuIndex == common.subMenuIndex) {
+          return null;
+        } else {
+          dispatch(changeSelectedMenu({ mainMenuIndex, subMenuIndex }));
+        }
+      } else {
+        return null;
+      }
+    } else if (pathnameArray.length == 4) {
       currentMainMenu = pathnameArray[pathArrayLength - 1];
     } else {
       currentMainMenu = pathnameArray[pathArrayLength - 2];

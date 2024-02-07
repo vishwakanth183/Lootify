@@ -1,10 +1,11 @@
-import { Button, Divider, ThemeProvider } from "@mui/material";
+import { Button, Divider, IconButton, ThemeProvider, Typography } from "@mui/material";
 import Link from "next/link";
 import React, { FC } from "react";
 
 import "../../scss/appbar.scss";
 import "./addHeaderComponent.scss";
 import { customMuiTheme } from "../../muistyles/customProvider";
+import { ArrowBack } from "@mui/icons-material";
 
 export interface actionButtonInterface {
   title: String;
@@ -16,43 +17,42 @@ export interface addHeaderComponentProps {
   href?: URL | string;
   buttonTitle?: String;
   modalHeader?: boolean;
-  actionButtons?: actionButtonInterface[];
-  callbackFunction?: (() => void) | undefined;
+  actionView?: React.ReactNode;
+  includeBackOption?: boolean;
+  backHandler?: () => void;
 }
 
-const AddHeaderComponent: FC<addHeaderComponentProps> = ({ title, href, buttonTitle, modalHeader, callbackFunction, actionButtons }) => {
+const AddHeaderComponent: FC<addHeaderComponentProps> = ({ title, href, buttonTitle, modalHeader, actionView, backHandler, includeBackOption }) => {
   return (
-    <ThemeProvider theme={customMuiTheme}>
-      <div className="headerMainView">
-        <header className="displayEnd headerPadding">
-          <h2 className="headerTitle">{title}</h2>
-          {!modalHeader ? (
-            <div>
-              {href && (
-                <Link href={href}>
-                  <Button variant="contained" color="secondary">
-                    {buttonTitle}
-                  </Button>
-                </Link>
-              )}
-            </div>
-          ) : (
-            <div className="actionButtonView">
-              {actionButtons?.map((actionItem, index) => {
-                return (
-                  <div key={index}>
-                    <Button variant="contained" color="secondary" onClick={actionItem.callbackFunction} sx={{ ml: 3, width: 100 }}>
-                      {actionItem.title}
-                    </Button>
-                  </div>
-                );
-              })}
-            </div>
+    <div className="headerMainView">
+      <header className="displayEnd headerPadding">
+        <div className="headingRowView">
+          {includeBackOption && (
+            <IconButton onClick={backHandler}>
+              <ArrowBack color="secondary" />
+            </IconButton>
           )}
-        </header>
-        <Divider sx={{ mt: 2, mb: 2 }} />
-      </div>
-    </ThemeProvider>
+          <Typography variant="h6" className="headerTitle">
+            {title}
+          </Typography>
+          {/* <h2 className="headerTitle">{title}</h2> */}
+        </div>
+        {!modalHeader ? (
+          <div>
+            {href && (
+              <Link href={href}>
+                <Button variant="contained" color="secondary">
+                  {buttonTitle}
+                </Button>
+              </Link>
+            )}
+          </div>
+        ) : (
+          <div className="actionButtonView">{actionView}</div>
+        )}
+      </header>
+      <Divider sx={{ mt: 2, mb: 2 }} />
+    </div>
   );
 };
 

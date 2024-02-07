@@ -1,0 +1,45 @@
+.mainContentView {
+  display: flex;
+  flex-direction: row;
+  padding-left: 2vw;
+  padding-right: 1vw;
+  justify-content: space-between;
+}
+
+.leftView {
+  width: 40vw;
+}
+
+.rightView {
+  width: 40vw;
+}
+
+.horizontalEndView {
+  display: flex;
+  justify-content: flex-end;
+  align-items: flex-end;
+}
+
+.colorPickerView {
+  z-index: 100;
+  background-color: white;
+  padding: 10px;
+}
+
+.colorPickerPadding {
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+.centerView {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.colorPickerHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
