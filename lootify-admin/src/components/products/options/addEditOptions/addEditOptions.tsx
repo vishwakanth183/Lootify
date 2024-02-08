@@ -15,6 +15,8 @@ import { Add, Circle, Clear, Delete } from "@mui/icons-material";
 import FormikCheckBox from "@/src/shared/components/Formik/FormikCheckoBox";
 import { useRouteMenuCheck } from "@/src/hooks/useRouteMenuCheck";
 import { usePathname, useRouter } from "next/navigation";
+import { toast } from "react-toastify";
+import CommonToastContainer from "@/src/shared/components/Snackbar/CommonToastContainer";
 
 interface addEditOptionProps {
   add?: boolean;
@@ -45,7 +47,7 @@ const AddEditOptions: FC<addEditOptionProps> = ({ add, edit, view, id }) => {
   };
 
   // Variable to handle initial values
-  let initialValues = { name: "", description: "", showColors: false, optionValues: [] };
+  let initialValues = { name: "", description: "", showColors: false, optionValues: [{ value: "", color: undefined }] };
 
   // Variable to handle current selected color picker index
   const [selectedIndex, setSelectedIndex] = useState<number | undefined>(undefined);
@@ -65,6 +67,8 @@ const AddEditOptions: FC<addEditOptionProps> = ({ add, edit, view, id }) => {
   return (
     <React.Fragment>
       <ComponentView>
+        {/* <ToastContainerWrapper /> */}
+        <CommonToastContainer />
         <Formik validateOnMount initialValues={initialValues} validationSchema={validationSchema} onSubmit={handleSubmit}>
           {({ values, errors, touched, isValid, dirty, resetForm, setFieldValue, enableReinitialize }) => (
             // console.log("values", values),
@@ -160,7 +164,11 @@ const AddEditOptions: FC<addEditOptionProps> = ({ add, edit, view, id }) => {
                                         <InputAdornment position="start">
                                           <IconButton
                                             onClick={() => {
-                                              setSelectedIndex(optionValueIndex), setSelectedColor(optionValue.color);
+                                              if (optionValue.value) {
+                                                setSelectedIndex(optionValueIndex), setSelectedColor(optionValue.color);
+                                              } else {
+                                                toast.error(<Typography>Enter value to continue</Typography>);
+                                              }
                                             }}>
                                             <Circle htmlColor={optionValue.color} />
                                           </IconButton>

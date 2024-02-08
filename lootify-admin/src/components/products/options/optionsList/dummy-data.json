@@ -3,60 +3,70 @@
     "optionName": "Option 1",
     "optionValueLength": 1,
     "colors": false,
-    "mappedProducts": 0
+    "mappedProducts": 0,
+    "id": 1
   },
   {
     "optionName": "Option 2",
     "optionValueLength": 2,
     "colors": true,
-    "mappedProducts": 2
+    "mappedProducts": 2,
+    "id": 2
   },
   {
     "optionName": "Option 3",
     "optionValueLength": 3,
     "colors": false,
-    "mappedProducts": 4
+    "mappedProducts": 4,
+    "id": 3
   },
   {
     "optionName": "Option 4",
     "optionValueLength": 4,
     "colors": true,
-    "mappedProducts": 6
+    "mappedProducts": 6,
+    "id": 4
   },
   {
     "optionName": "Option 5",
     "optionValueLength": 5,
     "colors": false,
-    "mappedProducts": 8
+    "mappedProducts": 8,
+    "id": 5
   },
   {
     "optionName": "Option 6",
     "optionValueLength": 6,
     "colors": true,
-    "mappedProducts": 10
+    "mappedProducts": 10,
+    "id": 6
   },
   {
     "optionName": "Option 7",
     "optionValueLength": 7,
     "colors": false,
-    "mappedProducts": 12
+    "mappedProducts": 12,
+    "id": 7
   },
   {
     "optionName": "Option 8",
     "optionValueLength": 8,
     "colors": true,
-    "mappedProducts": 14
+    "mappedProducts": 14,
+    "id": 8
   },
   {
     "optionName": "Option 9",
     "optionValueLength": 9,
     "colors": false,
-    "mappedProducts": 16
+    "mappedProducts": 16,
+    "id": 9
   },
   {
     "optionName": "Option 10",
     "optionValueLength": 10,
     "colors": true,
-    "mappedProducts": 18
+    "mappedProducts": 18,
+    "id": 10
   }
 ]
