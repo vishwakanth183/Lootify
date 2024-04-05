@@ -37,7 +37,7 @@ const iconComponents: { [key: string]: React.ElementType } = {
 
 const GenerateMenuIcon: React.FC<menuIconProps> = ({ name, selected, submenu }) => {
   const IconComponent = iconComponents[name.toLowerCase()] || iconComponents.default;
-  return <IconComponent htmlColor={selected ? (submenu ? "coral" : "white") : "grey"} />;
+  return <IconComponent htmlColor={selected ? (submenu ? "coral" : "coral") : "grey"} />;
 };
 
 export default React.memo(GenerateMenuIcon);
