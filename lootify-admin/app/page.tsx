@@ -18,7 +18,7 @@ const LootifyRootPage = () => {
     const changeRouteTimeout = setTimeout(() => {
       router.replace("/admin/drawermenu/dashboard");
     });
-
+    console.log("dev branch");
     return () => clearTimeout(changeRouteTimeout);
   }, []);
 
