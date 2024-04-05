@@ -10,7 +10,7 @@ export const useRouteMenuCheck = () => {
   const path = usePathname();
 
   useEffect(() => {
-    console.log("useRouteMenuCheck hook called");
+    // console.log("useRouteMenuCheck hook called");
     dispatch(routeMenuCheck({ path }));
   }, [dispatch, path]); // Include all dependencies
 };

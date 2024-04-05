@@ -6,6 +6,9 @@ import Image from "next/image";
 
 import "../src/shared/scss/commonStyles.scss";
 import { useRouter } from "next/navigation";
+import dotenv from "dotenv";
+
+dotenv.config();
 
 const LootifyRootPage = () => {
   // Variable to check the screensize
@@ -18,7 +21,6 @@ const LootifyRootPage = () => {
     const changeRouteTimeout = setTimeout(() => {
       router.replace("/admin/drawermenu/dashboard");
     });
-    console.log("dev branch");
     return () => clearTimeout(changeRouteTimeout);
   }, []);
 
