@@ -1,5 +1,5 @@
 "use client";
-import React, { FC, useEffect, useMemo, useState } from "react";
+import React, { FC, useEffect, useState } from "react";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
 import TableContainer from "@mui/material/TableContainer";
@@ -12,33 +12,21 @@ import Switch from "@mui/material/Switch";
 import IconButton from "@mui/material/IconButton";
 
 import "./../../../shared/scss/appbar.scss";
-import orderList from './orderListComponent.module.scss'
+import discountList from './discountList.module.scss'
 import AddHeaderComponent from "@/src/shared/components/addHeader/addHeaderComponent";
 import ComponentView from "@/src/shared/components/componentView/componentView";
 import CommonSearchInput from "@/src/shared/components/search/commonSearchInput";
 import HttpRoutingService from "@/src/services/axios/httpRoutingService";
-import { Box, Button, Stack } from "@mui/material";
-import { Add, Autorenew, Delete, Edit, HdrPlus } from "@mui/icons-material";
-import moment from "moment";
-import Link from "next/link";
+import { Box, Stack } from "@mui/material";
+import { Autorenew, Delete, Edit } from "@mui/icons-material";
 
-interface orderItem {
+interface optionItem {
   id: number;
-  orderStatus: string;
-  shippingType: string,
-  subTotal: number,
-  discountAmount: number,
-  tax: number,
-  shippingFee: number,
-  deliveryFee: number,
-  total: number,
-  isCancelled: boolean,
-  createdAt: Date,
-  updatedAt: Date,
-  customerId: 1
+  promoCode: String;
+  isActive: boolean;
 }
 
-const OrderListComponent: FC<{}> = () => {
+const DiscountListComponent: FC<{}> = () => {
   // Variable to handle loading value
   const [loading, setLoading] = useState<boolean>(false);
 
@@ -52,30 +40,21 @@ const OrderListComponent: FC<{}> = () => {
   const [searchValue, setSearchValue] = useState<string>("");
 
   // Variable to handle page data
-  const [pageData, setPageData] = useState<orderItem[]>();
+  const [pageData, setPageData] = useState<optionItem[]>();
 
   // Variable to handle total data count
   const [totalCount, setTotalCount] = useState<number>(0);
 
   // Variable to handle page table headers
-  const orderListHeader: { headerName: string }[] = [
+  const discountHeaders: { headerName: string }[] = [
     {
       headerName: "S.No",
     },
     {
-      headerName: "OrderId",
+      headerName: "PromoCode",
     },
     {
-      headerName: "Status",
-    },
-    {
-      headerName: "Total",
-    },
-    {
-      headerName: "Discount",
-    },
-    {
-      headerName: "Ordered Date",
+      headerName: "isVariants",
     },
     {
       headerName: "Actions",
@@ -105,8 +84,9 @@ const OrderListComponent: FC<{}> = () => {
 
   // Function to handle page list data
   const getOptionsList = async ({ offset, searchValue }: { offset: number; searchValue: string }) => {
-    await HttpRoutingService.getMethod("order/getOrderList", { offset: page * rowsPerPage, searchText: searchValue, limit: rowsPerPage })
+    await HttpRoutingService.getMethod("discount/discountList", { offset: page * rowsPerPage, searchText: searchValue, limit: rowsPerPage })
       .then(res => {
+        console.log("discountList res", res);
         setPageData(res.data.rows);
         setTotalCount(res.data.count);
         setLoading(false);
@@ -115,15 +95,6 @@ const OrderListComponent: FC<{}> = () => {
         console.log("option err", err);
       });
   };
-
-  // Function to handle date format
-  const formatDate = useMemo(() => (currentDate: Date) => {
-    if (currentDate) {
-      // const formattedDate = currentDate.toLocaleDateString('en-US', { year: "numeric", month: "long", day: "numeric" });
-      return moment(currentDate).format("MMMM D, YYYY");
-    }
-    return null
-  }, [pageData])
 
   // initial useeffect to get page data
   useEffect(() => {
@@ -135,35 +106,26 @@ const OrderListComponent: FC<{}> = () => {
     <React.Fragment>
       <ComponentView>
         {/* <AddHeaderComponent href={"/admin/drawermenu/products/options/new"} title={"Options List"} buttonTitle={"Add Options"} /> */}
-        <AddHeaderComponent title={"Order List"} modalHeader />
-        <Stack display={"flex"} justifyContent={"space-between"} alignItems={"center"} direction={"row"} mr={3}>
-
-          {/* search view */}
-          <div className={orderList.searchView}>
-            <CommonSearchInput
-              placeholder="Search by option name"
-              onChange={event => {
-                handleSearch(event.target.value), setPage(0);
-                // setSearchValue(event.target.value), setPage(0);
-              }}
-            />
-          </div>
-
-          {/* Manual order button */}
-          <Link href={"manualOrder"}>
-          <Button variant="contained" color="secondary" endIcon={<Add />}>Create Order</Button>
-          </Link>
-        </Stack>
+        <AddHeaderComponent title={"Discounts List"} modalHeader />
+        <div className={discountList.searchView}>
+          <CommonSearchInput
+            placeholder="Search by option name"
+            onChange={event => {
+              handleSearch(event.target.value), setPage(0);
+              // setSearchValue(event.target.value), setPage(0);
+            }}
+          />
+        </div>
 
         {/* List section */}
-        <div className={orderList.mainListView}>
+        <div className={discountList.mainListView}>
           {/* Items table display section */}
           <TableContainer component={Paper} sx={{ mt: 2 }}>
             <Table sx={{ minWidth: 700 }} aria-label="customized table">
               {/* Table headers */}
               <TableHead>
                 <TableRow sx={{ bgcolor: "black" }}>
-                  {orderListHeader.map((headerItem, index) => (
+                  {discountHeaders.map((headerItem, index) => (
                     <TableCell sx={{ color: "white" }} align="center" key={index}>
                       {headerItem.headerName}
                     </TableCell>
@@ -173,37 +135,28 @@ const OrderListComponent: FC<{}> = () => {
 
               {/* Table contents */}
               <TableBody>
-                {pageData?.map((item: orderItem, index: number) => {
-                  // console.log("orderItem", item);
+                {pageData?.map((item: optionItem, index: number) => {
+                  // console.log("optionItem", item);
                   return (
-                    <TableRow key={item.id}>
+                    <TableRow key={index}>
                       <TableCell sx={{ color: "black" }} align="center">
                         {index + 1}
                       </TableCell>
                       <TableCell sx={{ color: "black" }} align="center">
-                        {item.id}
+                        {item.promoCode}
                       </TableCell>
                       <TableCell sx={{ color: "black" }} align="center">
-                        {item.orderStatus}
+                        <Switch readOnly checked={item.isActive} />
                       </TableCell>
                       <TableCell sx={{ color: "black" }} align="center">
-                        {item.total}
-                      </TableCell>
-                      <TableCell sx={{ color: "black" }} align="center">
-                        {item.discountAmount}
-                      </TableCell>
-                      <TableCell sx={{ color: "black" }} align="center">
-                        {formatDate(item.createdAt)}
-                      </TableCell>
-                      <TableCell sx={{ color: "black" }} align="center">
-                        <Stack direction={"row"} display={"flex"} justifyContent={"center"} alignItems={"center"}>
-                          <IconButton>
-                            <Edit />
-                          </IconButton>
-                          <IconButton>
-                            <Delete />
-                          </IconButton>
-                        </Stack>
+                          <Stack direction={"row"} display={"flex"} justifyContent={"center"} alignItems={"center"}>
+                            <IconButton>
+                              <Edit />
+                            </IconButton>
+                            <IconButton>
+                              <Delete />
+                            </IconButton>
+                          </Stack>
                       </TableCell>
                     </TableRow>
                   );
@@ -230,4 +183,4 @@ const OrderListComponent: FC<{}> = () => {
   );
 };
 
-export default OrderListComponent;
+export default DiscountListComponent;

@@ -1,12 +1,12 @@
 "use client";
 
-import DiscountMarketingListComponent from "@/src/components/marketing/discountmarketing/discountmarketingList/discountMarketingList";
+import DiscountListComponent from "@/src/components/discount/discountList/discountList";
 import { useRouteMenuCheck } from "@/src/hooks/useRouteMenuCheck";
 import React from "react";
 
 const DiscountMarketing = () => {
   useRouteMenuCheck;
-  return <DiscountMarketingListComponent />;
+  return <DiscountListComponent />;
 };
 
 export default DiscountMarketing;

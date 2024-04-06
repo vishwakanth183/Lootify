@@ -1,8 +1,9 @@
 import React from "react";
 import "../../../shared/scss/appbar.scss";
+import ProductListComponent from "../allproduct/productListComponent";
 
 const RestoreProductListComponent = () => {
-  return <div className="appBarPadding fullheight">Restore ProductList Component</div>;
+  return <ProductListComponent isRestore/>
 };
 
 export default RestoreProductListComponent;

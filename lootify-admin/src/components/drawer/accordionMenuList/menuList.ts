@@ -9,11 +9,11 @@ export const menuData = [
   },
   {
     mainmenu: "orders",
-    submenu: ["orderlist"],
+    submenu: ["all orders","all customers"],
   },
   {
-    mainmenu: "marketing",
-    submenu: ["templates", "discount marketing"],
+    mainmenu: "discount",
+    submenu: ["all discounts", "templates"],
   },
   // {
   //   mainmenu: "logout",

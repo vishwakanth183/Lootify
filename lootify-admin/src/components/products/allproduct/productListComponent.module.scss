@@ -1,0 +1,25 @@
+.mainListView {
+  height: 70vh;
+  width: "100%";
+  //   overflow-y: scroll;
+}
+
+.searchView {
+  display: flex;
+  align-items: center;
+  margin-left: 10px;
+  margin-bottom: 10px;
+}
+
+.tableHeader {
+  background-color: red;
+}
+
+.css-12wnr2w-MuiButtonBase-root-MuiCheckbox-root.Mui-checked,
+.css-12wnr2w-MuiButtonBase-root-MuiCheckbox-root.MuiCheckbox-indeterminate {
+  color: rebeccapurple;
+}
+
+.testColor {
+  color: green;
+}

@@ -6,7 +6,7 @@ import { useRouteMenuCheck } from "@/src/hooks/useRouteMenuCheck";
 
 const ProductListRoute = () => {
   useRouteMenuCheck();
-  return <ProductListComponent />;
+  return <ProductListComponent isRestore={false} />;
 };
 
 export default ProductListRoute;

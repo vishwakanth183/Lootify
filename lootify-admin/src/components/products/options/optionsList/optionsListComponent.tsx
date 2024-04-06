@@ -114,7 +114,7 @@ const OptionsListComponent: FC<{}> = () => {
     <React.Fragment>
       <ComponentView>
         {/* <AddHeaderComponent href={"/admin/drawermenu/products/options/new"} title={"Options List"} buttonTitle={"Add Options"} /> */}
-        <AddHeaderComponent title={"Option List"} modalHeader />
+        <AddHeaderComponent title={"Options List"} modalHeader />
         <div className={optionsListStyle.searchView}>
           <CommonSearchInput
             placeholder="Search by option name"
@@ -128,13 +128,13 @@ const OptionsListComponent: FC<{}> = () => {
         {/* List section */}
         <div className={optionsListStyle.mainListView}>
           {/* Items table display section */}
-          <TableContainer component={Paper}>
+          <TableContainer component={Paper} sx={{mt:2}}>
             <Table sx={{ minWidth: 700 }} aria-label="customized table">
               {/* Table headers */}
               <TableHead>
                 <TableRow sx={{ bgcolor: "black" }}>
-                  {optionHeaders.map((headerItem: { headerName: string }) => (
-                    <TableCell sx={{ color: "white" }} align="center">
+                  {optionHeaders.map((headerItem, index) => (
+                    <TableCell sx={{ color: "white" }} align="center" key={index}>
                       {headerItem.headerName}
                     </TableCell>
                   ))}

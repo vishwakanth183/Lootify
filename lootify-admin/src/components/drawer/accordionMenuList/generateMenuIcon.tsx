@@ -12,6 +12,8 @@ import {
   ReceiptLongRounded,
   DiscountRounded,
   RepeatRounded,
+  LocalOffer,
+  Person,
 } from "@mui/icons-material";
 
 interface menuIconProps {
@@ -30,14 +32,16 @@ const iconComponents: { [key: string]: React.ElementType } = {
   ["all products"]: ChecklistRounded,
   ["restore products"]: HistoryRounded,
   options: BuildRounded,
-  orderlist: ReceiptLongRounded,
-  ["discount marketing"]: DiscountRounded,
+  ["all orders"]: ReceiptLongRounded,
+  ["all customers"]: Person,
+  ["discount"]: DiscountRounded,
+  ["all discounts"] : LocalOffer,
   templates: RepeatRounded,
 };
 
 const GenerateMenuIcon: React.FC<menuIconProps> = ({ name, selected, submenu }) => {
   const IconComponent = iconComponents[name.toLowerCase()] || iconComponents.default;
-  return <IconComponent htmlColor={selected ? (submenu ? "coral" : "coral") : "grey"} />;
+  return <IconComponent htmlColor={selected ? (submenu ? "coral" : "white") : "grey"} />;
 };
 
 export default React.memo(GenerateMenuIcon);

@@ -32,7 +32,7 @@ const AddHeaderComponent: FC<addHeaderComponentProps> = ({ title, href, buttonTi
               <ArrowBack color="secondary" />
             </IconButton>
           )}
-          <Typography variant="h6" className="headerTitle">
+          <Typography variant="h5" className="headerTitle" color={"purple"}>
             {title}
           </Typography>
           {/* <h2 className="headerTitle">{title}</h2> */}
