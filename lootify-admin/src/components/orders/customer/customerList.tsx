@@ -18,16 +18,27 @@ import ComponentView from "@/src/shared/components/componentView/componentView";
 import CommonSearchInput from "@/src/shared/components/search/commonSearchInput";
 import HttpRoutingService from "@/src/services/axios/httpRoutingService";
 import { Box, Stack } from "@mui/material";
-import { ArrowForward, Autorenew, Delete, Edit, RadioButtonCheckedOutlined } from "@mui/icons-material";
+import { ArrowForward, Autorenew, Delete, Edit, RadioButtonCheckedOutlined, RadioButtonUncheckedOutlined } from "@mui/icons-material";
+import { useDispatch, useSelector } from "react-redux";
+import { AppDispatch, RootState } from "@/app/redux/store";
+import { setCustomerDetails, updateStepper } from "@/app/redux/slices/order/manualOrder";
 
 interface optionItem {
     id: number;
     customerName: string;
     mobileNumber: string;
     email: string;
+    address : any
 }
 
 const CustomerListComponent: FC<{ isManualOrder: boolean }> = ({ isManualOrder }) => {
+
+    // Variable to hold redux appdispatch
+    const dispatch = useDispatch<AppDispatch>();
+
+    // Variable to hold common state of the redux
+    const manualOrderSlice = useSelector((state: RootState) => state.manualOrderSlice);
+
     // Variable to handle loading value
     const [loading, setLoading] = useState<boolean>(false);
 
@@ -136,11 +147,11 @@ const CustomerListComponent: FC<{ isManualOrder: boolean }> = ({ isManualOrder }
                             }}
                         />
                     </div>
-                        {
-                            isManualOrder ? <IconButton sx={{ bgcolor: "purple" }} size="large">
-                                <ArrowForward htmlColor="white" />
-                            </IconButton> : null
-                        }
+                    {
+                        isManualOrder ? <IconButton  disableTouchRipple disabled={!manualOrderSlice.selectedCustomer} sx={{ bgcolor: "purple" }} size="large" onClick={() => dispatch(updateStepper({ index: 1 }))}>
+                            <ArrowForward htmlColor="white" />
+                        </IconButton> : null
+                    }
                 </Stack>
 
                 {/* List section */}
@@ -167,7 +178,9 @@ const CustomerListComponent: FC<{ isManualOrder: boolean }> = ({ isManualOrder }
                                         <TableRow key={index}>
                                             {
                                                 isManualOrder ? <TableCell sx={{ color: "black" }} align="center">
-                                                    <RadioButtonCheckedOutlined />
+                                                    {<IconButton onClick={()=>dispatch(setCustomerDetails(item))}>
+                                                        {manualOrderSlice.selectedCustomer && item.id === manualOrderSlice.selectedCustomer.id ? <RadioButtonCheckedOutlined htmlColor="coral"/> : <RadioButtonUncheckedOutlined />}
+                                                    </IconButton>}
                                                 </TableCell> : <TableCell sx={{ color: "black" }} align="center">
                                                     {index + 1}
                                                 </TableCell>

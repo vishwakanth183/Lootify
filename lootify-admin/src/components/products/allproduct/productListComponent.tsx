@@ -10,6 +10,8 @@ import Paper from "@mui/material/Paper";
 import TablePagination from "@mui/material/TablePagination";
 import Switch from "@mui/material/Switch";
 import IconButton from "@mui/material/IconButton";
+import CommonToastContainer from "@/src/shared/components/Snackbar/CommonToastContainer";
+
 
 import "./../../../shared/scss/appbar.scss";
 import productListStyle from './productListComponent.module.scss'
@@ -17,10 +19,14 @@ import AddHeaderComponent from "@/src/shared/components/addHeader/addHeaderCompo
 import ComponentView from "@/src/shared/components/componentView/componentView";
 import CommonSearchInput from "@/src/shared/components/search/commonSearchInput";
 import HttpRoutingService from "@/src/services/axios/httpRoutingService";
-import { Box, Stack } from "@mui/material";
-import { ArrowForward, Autorenew, ControlPoint, ControlPointDuplicate, Delete, Edit, RadioButtonCheckedOutlined } from "@mui/icons-material";
+import { Box, Divider, Modal, Stack, Typography } from "@mui/material";
+import { ArrowForward, Autorenew, Close, ControlPoint, ControlPointDuplicate, Delete, Edit, RadioButtonCheckedOutlined } from "@mui/icons-material";
+import ProductModal from "../../orders/manualOrder/productModal";
+import { useDispatch } from "react-redux";
+import { AppDispatch } from "@/app/redux/store";
+import { updateStepper } from "@/app/redux/slices/order/manualOrder";
 
-interface optionItem {
+export interface productItem {
   id: number;
   productName: String;
   isVariants: boolean;
@@ -38,6 +44,10 @@ interface optionItem {
 }
 
 const ProductListComponent: FC<{ isRestore?: boolean, isManualOrder?: boolean }> = ({ isRestore, isManualOrder }) => {
+
+  // Variable to handle dispatch
+const dispatch = useDispatch<AppDispatch>();
+
   // Variable to handle loading value
   const [loading, setLoading] = useState<boolean>(false);
 
@@ -51,7 +61,7 @@ const ProductListComponent: FC<{ isRestore?: boolean, isManualOrder?: boolean }>
   const [searchValue, setSearchValue] = useState<string>("");
 
   // Variable to handle page data
-  const [pageData, setPageData] = useState<optionItem[]>();
+  const [pageData, setPageData] = useState<productItem[]>();
 
   // Variable to handle total data count
   const [totalCount, setTotalCount] = useState<number>(0);
@@ -80,6 +90,12 @@ const ProductListComponent: FC<{ isRestore?: boolean, isManualOrder?: boolean }>
       headerName: "Actions",
     },
   ];
+
+  // Variable to handle selectedProduct
+  const [selectedProduct, setSelectedProduct] = useState<productItem | null>(null);
+
+  // Variable to open product modal
+  const [productModal, setProductModal] = useState<boolean>(false);
 
   // Function to handle change page pagination
   const handleChangePage = (event: React.MouseEvent<HTMLButtonElement> | null, newPage: number) => {
@@ -116,17 +132,31 @@ const ProductListComponent: FC<{ isRestore?: boolean, isManualOrder?: boolean }>
       });
   };
 
+  // Function to close product modal
+  const closeProductModal = () => {
+    setProductModal(false);
+    setSelectedProduct(null);
+  }
+
   // initial useeffect to get page data
   useEffect(() => {
     setLoading(true);
     getOptionsList({ offset: 0, searchValue: searchValue });
   }, [searchValue, rowsPerPage, page]);
 
+  // useEffect use to open the product modal when triggered
+  useEffect(() => {
+    if (selectedProduct) {
+      setProductModal(true);
+    }
+  }, [selectedProduct])
+
   return (
     <React.Fragment>
+        <CommonToastContainer />
       <ComponentView>
         {/* <AddHeaderComponent href={"/admin/drawermenu/products/options/new"} title={"Options List"} buttonTitle={"Add Options"} /> */}
-        {isManualOrder?  <div></div>:<AddHeaderComponent title={isRestore ? "Restore List" : "Products List"} modalHeader />}
+        {isManualOrder ? <div></div> : <AddHeaderComponent title={isRestore ? "Restore List" : "Products List"} modalHeader />}
 
         <Stack display={"flex"} direction={"row"} justifyContent={"space-between"} alignItems={"center"}>
           <div className={productListStyle.searchView}>
@@ -139,7 +169,7 @@ const ProductListComponent: FC<{ isRestore?: boolean, isManualOrder?: boolean }>
             />
           </div>
           {
-            isManualOrder ? <IconButton sx={{ bgcolor: "purple" }} size="large">
+            isManualOrder ? <IconButton sx={{ bgcolor: "purple" }} size="large" onClick={() => dispatch(updateStepper({ index: 2}))}>
               <ArrowForward htmlColor="white" />
             </IconButton> : null
           }
@@ -163,14 +193,14 @@ const ProductListComponent: FC<{ isRestore?: boolean, isManualOrder?: boolean }>
 
               {/* Table contents */}
               <TableBody>
-                {pageData?.map((item: optionItem, index: number) => {
-                  // console.log("optionItem", item);
+                {pageData?.map((item: productItem, index: number) => {
+                  // console.log("productItem", item);
                   let defaultVariant = item.isVariants && item.variantCombinationDetails.find((variant) => variant.isDefault);
                   return (
                     <TableRow key={index}>
                       <TableCell sx={{ color: "black" }} align="center">
-                          {index + 1}
-                        </TableCell>
+                        {index + 1}
+                      </TableCell>
 
                       <TableCell sx={{ color: "black" }} align="center">
                         {item.productName}
@@ -192,20 +222,20 @@ const ProductListComponent: FC<{ isRestore?: boolean, isManualOrder?: boolean }>
                           <IconButton>
                             <Autorenew htmlColor="coral" />
                           </IconButton> :
-                          isManualOrder ? 
-                          <IconButton>
-                            {defaultVariant? <ControlPointDuplicate htmlColor="coral"/> : <ControlPoint htmlColor="coral" />}
-                          </IconButton>
-                          :
-                          <Stack direction={"row"} display={"flex"} justifyContent={"center"} alignItems={"center"}>
-                            <IconButton>
-                              <Edit />
+                          isManualOrder ?
+                            <IconButton onClick={() => setSelectedProduct(item)}>
+                              {defaultVariant ? <ControlPointDuplicate htmlColor="coral" /> : <ControlPoint htmlColor="coral" />}
                             </IconButton>
-                            <IconButton>
-                              <Delete />
-                            </IconButton>
+                            :
+                            <Stack direction={"row"} display={"flex"} justifyContent={"center"} alignItems={"center"}>
+                              <IconButton>
+                                <Edit />
+                              </IconButton>
+                              <IconButton>
+                                <Delete />
+                              </IconButton>
 
-                          </Stack>
+                            </Stack>
                         }
                       </TableCell>
                     </TableRow>
@@ -229,6 +259,31 @@ const ProductListComponent: FC<{ isRestore?: boolean, isManualOrder?: boolean }>
           </Box>
         </div>
       </ComponentView>
+
+
+      {/* Product modal */}
+      <Modal
+        open={productModal}
+        onClose={closeProductModal}
+        sx={{ display: "flex", justifyContent: "center", alignItems: "center" }}
+      >
+        <Box sx={{
+          height: selectedProduct?.isVariants ? 400 : 300, width: 700, position: "absolute",
+          boxShadow: 24,
+          p: 2,
+          bgcolor: "white",
+          overflowY : "scroll"
+        }}>
+          <Stack display={"flex"} justifyContent={"space-between"} alignItems={"center"} direction={"row"}>
+            <Typography variant="h6" color={"black"}>{"Product Details"}</Typography>
+            <IconButton onClick={() => closeProductModal()}>
+              <Close />
+            </IconButton>
+          </Stack>
+          <Divider />
+          <ProductModal product={selectedProduct} closeFunction={()=>closeProductModal()}/>
+        </Box>
+      </Modal>
     </React.Fragment>
   );
 };

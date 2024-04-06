@@ -1,12 +1,12 @@
+import { variantCombinationDetails } from "@/src/components/orders/manualOrder/productModal";
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 interface selectedCustomerAction {
-    // customerDeatils: {
-        customerName : string,
-        mobileNumer : string,
-        email : string,
-        address : any
-    // }
+    id: number;
+    customerName: string;
+    mobileNumber: string;
+    email: string;
+    address : any
 }
 
 interface productItem {
@@ -16,22 +16,19 @@ interface productItem {
     salesPrice: number;
     mrpPrice: number;
     stock: number;
-    variantCombinationDetails: {
-      "id": number,
-      "combinationName": string,
-      "isDefault": boolean | null,
-      "salesPrice": number,
-      "mrpPrice": number,
-      "stock": number
-    }[];
+    variantId : number;
+    quantity : number,
+    variantCombinationDetails: variantCombinationDetails;
 }
 
 interface manualOrder {
-    selectedCustomer : selectedCustomerAction | null,
-    cartProducts : productItem[]
+    activeStepper: number,
+    selectedCustomer: selectedCustomerAction | null,
+    cartProducts: productItem[]
 }
 
-const manualOrderState : manualOrder  = {
+const manualOrderState: manualOrder = {
+    activeStepper: 0,
     selectedCustomer: null,
     cartProducts: [],
 }
@@ -46,7 +43,7 @@ export const manualOrderSlice = createSlice({
         },
 
         // add product to cart
-        addToCartProducts : (state,action : PayloadAction<productItem>)=>{
+        addToCartProducts: (state, action: PayloadAction<productItem>) => {
             let newCartData = state.cartProducts;
             newCartData.push(action.payload);
             state.cartProducts = newCartData;
@@ -54,17 +51,22 @@ export const manualOrderSlice = createSlice({
         },
 
         // set selected products
-        updateCartProducts : (state,action : PayloadAction<productItem[]>)=>{
+        updateCartProducts: (state, action: PayloadAction<any>) => {
             // state.cartProducts = action.payload.productDetails;
             state.cartProducts = action.payload;
         },
+
+        // function to change stepper position
+        updateStepper: (state, action: PayloadAction<{ index: any }>) => {
+            state.activeStepper = action.payload.index;
+        }
 
 
     }
 })
 
 // Extract and export actions
-export const {setCustomerDetails,addToCartProducts,updateCartProducts } = manualOrderSlice.actions;
+export const { setCustomerDetails, addToCartProducts, updateCartProducts , updateStepper} = manualOrderSlice.actions;
 export type manualOrderSliceState = ReturnType<typeof manualOrderSlice.reducer>;
 
 // Export the reducer for use in the store
