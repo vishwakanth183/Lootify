@@ -17,8 +17,12 @@ import AddHeaderComponent from "@/src/shared/components/addHeader/addHeaderCompo
 import ComponentView from "@/src/shared/components/componentView/componentView";
 import CommonSearchInput from "@/src/shared/components/search/commonSearchInput";
 import HttpRoutingService from "@/src/services/axios/httpRoutingService";
-import { Box, Stack } from "@mui/material";
-import { Delete, Edit } from "@mui/icons-material";
+import { Box, Button, Stack, Typography } from "@mui/material";
+import { Add, Delete, Edit } from "@mui/icons-material";
+import Link from "next/link";
+import CommonToastContainer from "@/src/shared/components/Snackbar/CommonToastContainer";
+import { toast } from "react-toastify";
+
 
 interface optionItem {
   id: number;
@@ -91,10 +95,10 @@ const OptionsListComponent: FC<{}> = () => {
   };
 
   // Function to handle page list data
-  const getOptionsList = async ({ offset, searchValue }: { offset: number; searchValue: string }) => {
+  const getOptionsList = async ({ offset, searchValue }: { offset?: number; searchValue: string }) => {
     await HttpRoutingService.getMethod("options/getOptionsList", { offset: page * rowsPerPage, searchText: searchValue, limit: rowsPerPage })
       .then(res => {
-        console.log("optionList res", res);
+        // console.log("optionList res", res);
         setPageData(res.data.rows);
         setTotalCount(res.data.count);
         setLoading(false);
@@ -103,6 +107,27 @@ const OptionsListComponent: FC<{}> = () => {
         console.log("option err", err);
       });
   };
+
+  // Function to handle option delete
+  const handleDelete = (option: optionItem) => {
+    if (option.productOptionMappings.length) {
+      toast.error(<Typography>Can't deleted option it is being mapped to some products</Typography>);
+    }
+    else
+    {
+      let deleteOption = {
+        optionId : option.id,
+        optionValueIds: option.optionValues.map((item)=>item.id)
+      }
+      console.log("delete option",deleteOption)
+      HttpRoutingService.postMethod("options/deleteOption",deleteOption).then((res)=>{
+        toast.success(<Typography>Option deleted successfully</Typography>);
+        getOptionsList({searchValue:searchValue});
+      }).catch((err)=>{
+      toast.error(<Typography>Something went wrong! Try again</Typography>);
+      })
+    }
+  }
 
   // initial useeffect to get page data
   useEffect(() => {
@@ -113,22 +138,32 @@ const OptionsListComponent: FC<{}> = () => {
   return (
     <React.Fragment>
       <ComponentView>
+      <CommonToastContainer />
         {/* <AddHeaderComponent href={"/admin/drawermenu/products/options/new"} title={"Options List"} buttonTitle={"Add Options"} /> */}
         <AddHeaderComponent title={"Options List"} modalHeader />
-        <div className={optionsListStyle.searchView}>
-          <CommonSearchInput
-            placeholder="Search by option name"
-            onChange={event => {
-              handleSearch(event.target.value), setPage(0);
-              // setSearchValue(event.target.value), setPage(0);
-            }}
-          />
-        </div>
+        <Stack display={"flex"} justifyContent={"space-between"} alignItems={"center"} direction={"row"} mr={3}>
+
+          {/* search view */}
+          <div className={optionsListStyle.searchView}>
+            <CommonSearchInput
+              placeholder="Search by option name"
+              onChange={event => {
+                handleSearch(event.target.value), setPage(0);
+                // setSearchValue(event.target.value), setPage(0);
+              }}
+            />
+          </div>
+
+          {/* Manual order button */}
+          <Link href={"options/new"}>
+            <Button variant="contained" color="secondary" endIcon={<Add />}>Create Option</Button>
+          </Link>
+        </Stack>
 
         {/* List section */}
         <div className={optionsListStyle.mainListView}>
           {/* Items table display section */}
-          <TableContainer component={Paper} sx={{mt:2}}>
+          <TableContainer component={Paper} sx={{ mt: 2 }}>
             <Table sx={{ minWidth: 700 }} aria-label="customized table">
               {/* Table headers */}
               <TableHead>
@@ -164,10 +199,11 @@ const OptionsListComponent: FC<{}> = () => {
                       </TableCell>
                       <TableCell sx={{ color: "black" }} align="center">
                         <Stack direction={"row"} display={"flex"} justifyContent={"center"} alignItems={"center"}>
+                          <Link href={`options/${item.id}`}>
                           <IconButton>
                             <Edit />
-                          </IconButton>
-                          <IconButton>
+                          </IconButton></Link>
+                          <IconButton onClick={()=>{handleDelete(item)}}>
                             <Delete />
                           </IconButton>
                         </Stack>

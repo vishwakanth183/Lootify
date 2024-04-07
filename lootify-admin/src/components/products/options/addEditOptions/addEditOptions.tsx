@@ -1,9 +1,9 @@
 "use client";
 
-import React, { FC, Fragment, useState } from "react";
+import React, { FC, Fragment, useState, useEffect } from "react";
 import ComponentView from "@/src/shared/components/componentView/componentView";
 
-import { Button, Dialog, Divider, Grid, IconButton, InputAdornment, Typography } from "@mui/material";
+import { Box, Button, CircularProgress, Dialog, Divider, Grid, IconButton, InputAdornment, Modal, Stack, Typography } from "@mui/material";
 import { Formik, FieldArray } from "formik";
 import * as Yup from "yup";
 import { HexColorPicker } from "react-colorful";
@@ -11,12 +11,13 @@ import { HexColorPicker } from "react-colorful";
 import FormikInput from "@/src/shared/components/Formik/FormikInput";
 import addEditOptionStyle from "./addEditOptions.module.scss";
 import AddHeaderComponent from "@/src/shared/components/addHeader/addHeaderComponent";
-import { Add, Circle, Clear, Delete } from "@mui/icons-material";
+import { Add, Circle, Clear, Close, Delete, PanoramaFishEye, Visibility } from "@mui/icons-material";
 import FormikCheckBox from "@/src/shared/components/Formik/FormikCheckoBox";
 import { useRouteMenuCheck } from "@/src/hooks/useRouteMenuCheck";
 import { usePathname, useRouter } from "next/navigation";
 import { toast } from "react-toastify";
 import CommonToastContainer from "@/src/shared/components/Snackbar/CommonToastContainer";
+import HttpRoutingService from "@/src/services/axios/httpRoutingService";
 
 interface addEditOptionProps {
   add?: boolean;
@@ -26,8 +27,20 @@ interface addEditOptionProps {
 }
 
 interface optionValueInterface {
-  value: String;
-  color: string | undefined;
+  id : number,
+  value: string, color?: string | undefined, productOptionValueIdMappings?: {
+    productId: number,
+    product: {
+      productName: string
+    }
+  }[]
+}
+
+interface optionData {
+  name: string,
+  description: string,
+  showColors: boolean,
+  optionsValues: optionValueInterface[]
 }
 
 const AddEditOptions: FC<addEditOptionProps> = ({ add, edit, view, id }) => {
@@ -35,19 +48,58 @@ const AddEditOptions: FC<addEditOptionProps> = ({ add, edit, view, id }) => {
 
   const validationSchema = Yup.object({
     name: Yup.string().required("Option is required"),
-    optionValues: Yup.array().of(
+    optionsValues: Yup.array().of(
       Yup.object().shape({
         value: Yup.string().required("Option value is required"),
       }),
     ),
   });
 
+  // Function to handle edit id
+  const editId = id;
+
+  // Function to handle loading state
+  const [loading, setLoading] = useState<boolean>(true);
+
+  // Variable to handle product mapping view
+  const [visisbleMapping, setVisibleMapping] = useState<boolean>(false);
+
+  // Variable to handle deleted optionvalue ids
+  const [removedIds,setRemovedIds] = useState<number[]>([]);
+
+  // Variable to handle selected optionValueId data
+  const [selectedOptionValueId, setSelectedOptionValueId] = useState<optionValueInterface>();
+
   const handleSubmit = (values: any) => {
-    console.log("Values", values);
+    if (edit) {
+      // console.log("Values", removedIds);
+      values["removeIds"] = removedIds;
+      HttpRoutingService.postMethod("options/updateOption", values, { optionId: editId }).then((res) => {
+        toast.success(<Typography>Option created successfully</Typography>);
+        setTimeout(()=>{
+          handleBack();
+        },1000)
+      }).catch((err) => {
+        toast.error(<Typography>Something went wrong try again</Typography>);
+      })
+    }
+    else {
+      // Creating new option
+      HttpRoutingService.postMethod("options/createOption", values).then((res) => {
+        toast.success(<Typography>Option created successfully</Typography>);
+        setTimeout(()=>{
+          handleBack();
+        },1000)
+      }).catch((err) => {
+        toast.error(<Typography>Something went wrong try again</Typography>);
+      })
+    }
   };
 
+
+
   // Variable to handle initial values
-  let initialValues = { name: "", description: "", showColors: false, optionValues: [{ value: "", color: undefined }] };
+  let initialValues: optionData = { name: "", description: "", showColors: false, optionsValues: [{ value: "", color: undefined, productOptionValueIdMappings: [] }] };
 
   // Variable to handle current selected color picker index
   const [selectedIndex, setSelectedIndex] = useState<number | undefined>(undefined);
@@ -64,11 +116,85 @@ const AddEditOptions: FC<addEditOptionProps> = ({ add, edit, view, id }) => {
     router.push(onePathBack);
   };
 
+  // useEffect for edit
+  useEffect(() => {
+    if (editId) {
+      HttpRoutingService.getMethod("options/getOptionDetails", { optionId: editId }).then((res) => {
+        console.log("edit option res", res)
+        initialValues.name = res.data.optionName;
+        initialValues.description = res.data.description;
+        initialValues.showColors = res.data.showColors;
+        initialValues.optionsValues = res.data.optionValues
+        setLoading(false);
+      }).catch((err: any) => {
+        console.log("edit option details err", err)
+      })
+    }
+    else {
+      setLoading(false);
+    }
+  }, [editId])
+
+  // if(loading && editId)
+  //   {
+  //    return <Box sx={{height:"100vh",width:"100vw",display:"flex",justifyContent:"center",alignItems:"center"}}>
+  //       <CircularProgress color="secondary"/>
+  //     </Box>
+  //   }
+
   return (
     <React.Fragment>
       <ComponentView>
         {/* <ToastContainerWrapper /> */}
         <CommonToastContainer />
+
+        {/* Product option mapping modal */}
+        <Modal open={visisbleMapping} onClose={() => setVisibleMapping(false)}
+          sx={{ display: "flex", justifyContent: "center", alignItems: "center" }}
+        >
+          <Box sx={{
+            height: 400,
+            width: 500,
+            position: "absolute",
+            boxShadow: 24,
+            p: 2,
+            bgcolor: "white",
+            overflowY: "scroll",
+            '&::-webkit-scrollbar': {
+              width: '8px', // Adjust width as needed
+              backgroundColor: '#F5F5F5',
+            },
+            '&::-webkit-scrollbar-thumb': {
+              backgroundColor: '#ccc',
+              borderRadius: '6px', // Optional for rounded corners
+            },
+            '&:hover > &::-webkit-scrollbar-thumb': {
+              backgroundColor: '#aaa',
+            },
+          }}>
+
+            <Stack display={"flex"} justifyContent={"space-between"} alignItems={"center"} direction={"row"}>
+              <Typography variant="h6" color={"black"}>{"Product Details"}</Typography>
+              <IconButton onClick={() => setVisibleMapping(false)}>
+                <Close />
+              </IconButton>
+            </Stack>
+            <Divider />
+
+            {/* Mapped products */}
+            {selectedOptionValueId?.productOptionValueIdMappings?.map((productItem, index) => {
+              return <Box key={index} pt={1} pb={1}>
+                <Stack direction={"row"} display={"flex"} alignItems={"center"} spacing={1}>
+                  <Typography color={"black"}>{index + 1}{")"}</Typography>
+                  <Typography color={"black"}>{productItem.product.productName}</Typography>
+                </Stack>
+                <Divider sx={{ pt: 1 }} />
+              </Box>
+            })}
+          </Box>
+        </Modal>
+
+
         <Formik validateOnMount initialValues={initialValues} validationSchema={validationSchema} onSubmit={handleSubmit}>
           {({ values, errors, touched, isValid, dirty, resetForm, setFieldValue, enableReinitialize }) => (
             // console.log("values", values),
@@ -82,11 +208,11 @@ const AddEditOptions: FC<addEditOptionProps> = ({ add, edit, view, id }) => {
                 }}
                 actionView={
                   <Fragment>
-                    <Button variant="contained" color="secondary" sx={{ ml: 3, width: 100 }} disabled={!dirty} onClick={() => resetForm()}>
+                    <Button variant="contained" color="secondary" sx={{ ml: 3, width: 100 }} disabled={!dirty} onClick={() => {resetForm(),setRemovedIds([])}}>
                       Cancel
                     </Button>
                     <Button variant="contained" color="secondary" sx={{ ml: 3, width: 100 }} disabled={!dirty || !isValid || Boolean(Object.keys(errors).length)} onClick={() => handleSubmit(values)}>
-                      Save
+                      {editId ? "Update" : "Save"}
                     </Button>
                   </Fragment>
                 }
@@ -108,7 +234,7 @@ const AddEditOptions: FC<addEditOptionProps> = ({ add, edit, view, id }) => {
                     {/* Right side view */}
                     <Grid item xs={12} sm={7}>
                       {/* <div className={addEditOptionStyle.rightView}> */}
-                      <FieldArray name="optionValues">
+                      <FieldArray name="optionsValues">
                         {({ push, remove }) => (
                           <>
                             <div className={addEditOptionStyle.horizontalEndView}>
@@ -118,10 +244,10 @@ const AddEditOptions: FC<addEditOptionProps> = ({ add, edit, view, id }) => {
                             </div>
 
                             {/* List of added option values */}
-                            {values.optionValues.map((optionValue: optionValueInterface, optionValueIndex) => {
+                            {values.optionsValues.map((optionValue: optionValueInterface, optionValueIndex) => {
                               // console.log("optionValue", optionValue);
                               return (
-                                <div>
+                                <div key={optionValueIndex}>
                                   {/* Color picker section */}
                                   {selectedIndex == optionValueIndex ? (
                                     <div style={{ position: "absolute" }} className={addEditOptionStyle.colorPickerView}>
@@ -145,7 +271,7 @@ const AddEditOptions: FC<addEditOptionProps> = ({ add, edit, view, id }) => {
                                           color="success"
                                           variant="contained"
                                           onClick={() => {
-                                            setFieldValue(`optionValues[${optionValueIndex}].color`, selectedColor), setSelectedColor("#00000");
+                                            setFieldValue(`optionsValues[${optionValueIndex}].color`, selectedColor), setSelectedColor("#00000");
                                             setSelectedIndex(undefined);
                                           }}>
                                           Save Color
@@ -158,7 +284,7 @@ const AddEditOptions: FC<addEditOptionProps> = ({ add, edit, view, id }) => {
                                     key={optionValueIndex}
                                     label={"Option Value"}
                                     placeholder="Enter option value"
-                                    name={`optionValues[${optionValueIndex}].value`}
+                                    name={`optionsValues[${optionValueIndex}].value`}
                                     InputProps={{
                                       startAdornment: values.showColors ? (
                                         <InputAdornment position="start">
@@ -176,8 +302,22 @@ const AddEditOptions: FC<addEditOptionProps> = ({ add, edit, view, id }) => {
                                       ) : null,
                                       endAdornment: (
                                         <InputAdornment position="start">
-                                          <IconButton onClick={() => remove(optionValueIndex)}>
-                                            <Delete htmlColor="grey" />
+                                          <IconButton onClick={() => {
+                                            console.log("optionValue", optionValue)
+                                            if (!optionValue.productOptionValueIdMappings?.length) {
+                                              if(optionValue.id) {
+                                                let newRemoveIds = removedIds;
+                                                newRemoveIds.push(optionValue.id);
+                                                setRemovedIds(newRemoveIds)
+                                              }
+                                              remove(optionValueIndex)
+                                            }
+                                            else {
+                                              setSelectedOptionValueId(optionValue);
+                                              setVisibleMapping(true);
+                                            }
+                                          }}>
+                                            {optionValue.productOptionValueIdMappings?.length ? <Visibility htmlColor="grey" /> : <Delete htmlColor="grey" />}
                                           </IconButton>
                                         </InputAdornment>
                                       ),
