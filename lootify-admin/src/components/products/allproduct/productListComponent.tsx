@@ -19,12 +19,13 @@ import AddHeaderComponent from "@/src/shared/components/addHeader/addHeaderCompo
 import ComponentView from "@/src/shared/components/componentView/componentView";
 import CommonSearchInput from "@/src/shared/components/search/commonSearchInput";
 import HttpRoutingService from "@/src/services/axios/httpRoutingService";
-import { Box, Divider, Modal, Stack, Typography } from "@mui/material";
-import { ArrowForward, Autorenew, Close, ControlPoint, ControlPointDuplicate, Delete, Edit, RadioButtonCheckedOutlined } from "@mui/icons-material";
+import { Box, Button, Divider, Modal, Stack, Typography } from "@mui/material";
+import { Add, ArrowForward, Autorenew, Close, ControlPoint, ControlPointDuplicate, Delete, Edit, RadioButtonCheckedOutlined } from "@mui/icons-material";
 import ProductModal from "../../orders/manualOrder/productModal";
 import { useDispatch } from "react-redux";
 import { AppDispatch } from "@/app/redux/store";
 import { updateStepper } from "@/app/redux/slices/order/manualOrder";
+import Link from "next/link";
 
 export interface productItem {
   id: number;
@@ -46,7 +47,7 @@ export interface productItem {
 const ProductListComponent: FC<{ isRestore?: boolean, isManualOrder?: boolean }> = ({ isRestore, isManualOrder }) => {
 
   // Variable to handle dispatch
-const dispatch = useDispatch<AppDispatch>();
+  const dispatch = useDispatch<AppDispatch>();
 
   // Variable to handle loading value
   const [loading, setLoading] = useState<boolean>(false);
@@ -153,7 +154,7 @@ const dispatch = useDispatch<AppDispatch>();
 
   return (
     <React.Fragment>
-        <CommonToastContainer />
+      <CommonToastContainer />
       <ComponentView>
         {/* <AddHeaderComponent href={"/admin/drawermenu/products/options/new"} title={"Options List"} buttonTitle={"Add Options"} /> */}
         {isManualOrder ? <div></div> : <AddHeaderComponent title={isRestore ? "Restore List" : "Products List"} modalHeader />}
@@ -161,7 +162,7 @@ const dispatch = useDispatch<AppDispatch>();
         <Stack display={"flex"} direction={"row"} justifyContent={"space-between"} alignItems={"center"}>
           <div className={productListStyle.searchView}>
             <CommonSearchInput
-              placeholder="Search by option name"
+              placeholder="Search by product name"
               onChange={event => {
                 handleSearch(event.target.value), setPage(0);
                 // setSearchValue(event.target.value), setPage(0);
@@ -169,9 +170,12 @@ const dispatch = useDispatch<AppDispatch>();
             />
           </div>
           {
-            isManualOrder ? <IconButton sx={{ bgcolor: "purple" }} size="large" onClick={() => dispatch(updateStepper({ index: 2}))}>
+            isManualOrder ? <IconButton sx={{ bgcolor: "purple" }} size="large" onClick={() => dispatch(updateStepper({ index: 2 }))}>
               <ArrowForward htmlColor="white" />
-            </IconButton> : null
+            </IconButton> : 
+              <Link href={"add"}>
+                <Button sx={{mr:3}} variant="contained" color="secondary" endIcon={<Add />}>Create Product</Button>
+              </Link>
           }
         </Stack>
 
@@ -272,7 +276,7 @@ const dispatch = useDispatch<AppDispatch>();
           boxShadow: 24,
           p: 2,
           bgcolor: "white",
-          overflowY : "scroll"
+          overflowY: "scroll"
         }}>
           <Stack display={"flex"} justifyContent={"space-between"} alignItems={"center"} direction={"row"}>
             <Typography variant="h6" color={"black"}>{"Product Details"}</Typography>
@@ -281,7 +285,7 @@ const dispatch = useDispatch<AppDispatch>();
             </IconButton>
           </Stack>
           <Divider />
-          <ProductModal product={selectedProduct} closeFunction={()=>closeProductModal()}/>
+          <ProductModal product={selectedProduct} closeFunction={() => closeProductModal()} />
         </Box>
       </Modal>
     </React.Fragment>
