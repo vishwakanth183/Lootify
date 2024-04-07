@@ -161,7 +161,8 @@ const ProductModal: FC<{ product: productItem | null, closeFunction: any }> = ({
         let newCartItem: any = productDetail;
         newCartItem = {
             "id": productDetail?.id,
-            "productName": productDetail?.productName
+            "productName": productDetail?.productName,
+            "isVariants" : productDetail?.isVariants
         }
         if (productDetail?.isVariants) {
             newCartItem["variantId"] = selectedVariant?.id;

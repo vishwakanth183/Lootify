@@ -1,5 +1,5 @@
 "use client"
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Stepper from '@mui/material/Stepper';
 import Step from '@mui/material/Step';
 import StepLabel from '@mui/material/StepLabel';
@@ -12,7 +12,7 @@ import CustomerListComponent from "../customer/customerList";
 import ProductListComponent from "../../products/allproduct/productListComponent";
 import { AppDispatch, RootState } from "@/app/redux/store";
 import { useDispatch, useSelector } from "react-redux";
-import { updateStepper } from "@/app/redux/slices/order/manualOrder";
+import { resetManualOrder, updateStepper } from "@/app/redux/slices/order/manualOrder";
 import Checkout from "./checkout/checkout";
 
 
@@ -48,6 +48,11 @@ const ManualOrderStepper = () => {
         }
     }
 
+    // useEffect to be called initally
+    useEffect(() => {
+        dispatch(resetManualOrder({}))
+    }, [])
+
     return (
         <React.Fragment>
             <ComponentView>
@@ -62,7 +67,7 @@ const ManualOrderStepper = () => {
                                     <StepLabel StepIconComponent={() => generateStepperIcon(label)}>
                                         <Typography fontWeight={"500"} variant="body1" color={index == manualOrderSlice.activeStepper ? "green" : "grey"}>{label}</Typography>
                                     </StepLabel>
-                                </StepButton>       
+                                </StepButton>
                             </Step>
                         ))}
                     </Stepper>

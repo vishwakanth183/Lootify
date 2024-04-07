@@ -6,7 +6,19 @@ interface selectedCustomerAction {
     customerName: string;
     mobileNumber: string;
     email: string;
-    address : any
+    customerAddresses: {
+        id: number,
+        addressLine1: string,
+        addressLine2: string,
+        isDefault: boolean,
+        city: string,
+        state: string,
+        country: string,
+        zipCode: string,
+        mobileNumber: string,
+        landmark: string,
+        addressType: string,
+    }[]
 }
 
 interface productItem {
@@ -16,8 +28,8 @@ interface productItem {
     salesPrice: number;
     mrpPrice: number;
     stock: number;
-    variantId : number;
-    quantity : number,
+    variantId: number;
+    quantity: number,
     variantCombinationDetails: variantCombinationDetails;
 }
 
@@ -59,14 +71,19 @@ export const manualOrderSlice = createSlice({
         // function to change stepper position
         updateStepper: (state, action: PayloadAction<{ index: any }>) => {
             state.activeStepper = action.payload.index;
+        },
+
+        // resetManualOrder
+        resetManualOrder: (state, action: PayloadAction<{}>) => {
+            state.activeStepper = 0;
+            state.cartProducts = [];
+            state.selectedCustomer = null
         }
-
-
     }
 })
 
 // Extract and export actions
-export const { setCustomerDetails, addToCartProducts, updateCartProducts , updateStepper} = manualOrderSlice.actions;
+export const { setCustomerDetails, addToCartProducts, updateCartProducts, updateStepper , resetManualOrder } = manualOrderSlice.actions;
 export type manualOrderSliceState = ReturnType<typeof manualOrderSlice.reducer>;
 
 // Export the reducer for use in the store
