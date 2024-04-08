@@ -164,7 +164,7 @@ const VariantSection: FC<{}> = () => {
                   return (
                     <Stack key={index} direction={"row"} spacing={1} mb={1} display={"flex"} alignItems={"center"}>
                       <CheckBox checked={isSelectedOption(item.id)} onChange={() => onOptionTap(item)} />
-                      <Typography>{item.optionName}</Typography>
+                      <Typography color={"black"}>{item.optionName}</Typography>
                     </Stack>
                   );
                 })
@@ -203,7 +203,7 @@ const VariantSection: FC<{}> = () => {
                   return (
                     <Stack key={index} direction={"row"} display={"flex"} alignItems={"center"}>
                       <CheckBox checked={isSelectedCombination(combo)} onChange={() => onCombinationTap(combo)} />
-                      <Typography>{createCombinationName(combo)}</Typography>
+                      <Typography color={"black"}>{createCombinationName(combo)}</Typography>
                     </Stack>
                   );
                 })

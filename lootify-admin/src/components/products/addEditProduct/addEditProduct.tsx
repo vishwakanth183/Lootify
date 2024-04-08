@@ -1,7 +1,7 @@
 "use client";
 
 import ComponentView from "@/src/shared/components/componentView/componentView";
-import React, { FC, useState } from "react";
+import React, { FC, useEffect, useRef, useState } from "react";
 import CommonToastContainer from "@/src/shared/components/Snackbar/CommonToastContainer";
 import { Box, Button, Card, Divider, Grid, IconButton, Modal, Stack, Switch, Typography } from "@mui/material";
 import AddHeaderComponent from "@/src/shared/components/addHeader/addHeaderComponent";
@@ -15,6 +15,7 @@ import { Add, Close, Delete, RadioButtonUncheckedOutlined } from "@mui/icons-mat
 import VariantSection from "./variantSection/variantSection";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "@/app/redux/store";
+import { resetProductSlice } from "@/app/redux/slices/product/addEditProductSlice";
 
 interface addEditProductProps {
   add?: boolean;
@@ -48,6 +49,9 @@ interface productItem {
 const AddEditProduct: FC<addEditProductProps> = ({ add, edit, id }) => {
   // Variable to handle navigation
   const router = useRouter();
+
+  // Variable to handle addEditProductRef
+  const formRef = useRef();
 
   // Redux utilities
   const dispatch = useDispatch<AppDispatch>();
@@ -85,16 +89,31 @@ const AddEditProduct: FC<addEditProductProps> = ({ add, edit, id }) => {
   // Variable to handle initial values
   let initialValues: productItem = { productName: "", isVariants: false, imgUrl: "", variantCombinationDetails: [] };
 
+  // Function to handle submit
+  const handleSubmit = () => {
+    console.log("addProduct", formRef?.current?.values);
+  }
+
+  useEffect(() => {
+    console.log("formRef", formRef?.current?.setFieldValue("variantCombinationDetails", addEditProductSlice.selectedVariantCombinations))
+  }, [addEditProductSlice.selectedVariantCombinations])
+
+  // To reset slice on initial page load
+  useEffect(() => {
+    dispatch(resetProductSlice());
+  }, [])
+
   return (
     <React.Fragment>
       <ComponentView>
         {/* <ToastContainerWrapper /> */}
         <CommonToastContainer />
 
-        <Formik validateOnMount initialValues={initialValues} validationSchema={validationSchema} onSubmit={() => {}}>
-          {({ values, errors, touched, isValid, dirty, resetForm, setFieldValue, enableReinitialize }) => (
+        <Formik innerRef={formRef} validateOnMount initialValues={initialValues} validationSchema={validationSchema} onSubmit={() => { }}>
+          {({ values, errors, touched, isValid, dirty, resetForm, setFieldValue, enableReinitialize, handleChange, handleBlur }) => (
             // console.log("values", values),
             <React.Fragment>
+              {/* {console.log("values.variantCombinationDetails",values.variantCombinationDetails)}, */}
               <AddHeaderComponent
                 title={`${add ? "Add" : edit ? "Edit" : "View"} Product`}
                 modalHeader
@@ -107,7 +126,7 @@ const AddEditProduct: FC<addEditProductProps> = ({ add, edit, id }) => {
                     <Button variant="contained" color="secondary" sx={{ ml: 3, width: 100 }}>
                       Cancel
                     </Button>
-                    <Button variant="contained" color="secondary" sx={{ ml: 3, width: 100 }}>
+                    <Button variant="contained" color="secondary" sx={{ ml: 3, width: 100 }} onClick={() => handleSubmit()}>
                       {edit ? "Update" : "Save"}
                     </Button>
                   </React.Fragment>
@@ -156,7 +175,8 @@ const AddEditProduct: FC<addEditProductProps> = ({ add, edit, id }) => {
                         );
                       })} */}
 
-                      {addEditProductSlice.selectedVariantCombinations.map((variant, index) => {
+
+                      {values.variantCombinationDetails.map((variant, index) => {
                         return (
                           <Box key={index}>
                             <Card sx={{ mt: 2, mr: 2, p: 2 }}>
@@ -177,15 +197,15 @@ const AddEditProduct: FC<addEditProductProps> = ({ add, edit, id }) => {
                               <Divider />
                               {/* Defualt section */}
                               <Stack direction={"row"} display={"flex"} justifyContent={"flex-end"} alignItems={"center"}>
-                                <Switch />
+                                <Switch onChange={() => setFieldValue(`variantCombinationDetails[${index}].isDefault`, !variant.isDefault)} />
                                 <Typography>Default</Typography>
                               </Stack>
                               {/* Input section */}
-                              <FormikInput label="Image URL" name="imgUrl" />
-                              <FormikInput label="Actual Price" required name="actualPrice" />
-                              <FormikInput label="MRP Price" required name="mrpPrice" />
-                              <FormikInput label="Sales Price" required name="salesPrice" />
-                              <FormikInput label="Stock" required name="stock" />
+                              <FormikInput label="Image URL" name={`variantCombinationDetails[${index}].imgUrl`} />
+                              <FormikInput label="Actual Price" required name={`variantCombinationDetails[${index}].actualPrice`} />
+                              <FormikInput label="MRP Price" required name={`variantCombinationDetails[${index}].mrpPrice`} />
+                              <FormikInput label="Sales Price" required name={`variantCombinationDetails[${index}].salesPrice`} />
+                              <FormikInput label="Stock" required name={`variantCombinationDetails[${index}].stock`} />
                             </Card>
                           </Box>
                           //   <Box>

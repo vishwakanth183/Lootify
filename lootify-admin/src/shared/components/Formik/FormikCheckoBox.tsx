@@ -16,6 +16,7 @@ const FormikCheckBox: React.FC<FormikCheckBoxProp & CheckboxProps> = ({ name, la
 
   return (
     <FormControlLabel
+    sx={{color:"black"}}
       control={
         <Field
           as={Checkbox} // Integrate Field component for Formik integration
