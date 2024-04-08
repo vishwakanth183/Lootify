@@ -12,7 +12,7 @@ import Switch from "@mui/material/Switch";
 import IconButton from "@mui/material/IconButton";
 
 import "./../../../shared/scss/appbar.scss";
-import orderList from './orderListComponent.module.scss'
+import orderList from "./orderListComponent.module.scss";
 import AddHeaderComponent from "@/src/shared/components/addHeader/addHeaderComponent";
 import ComponentView from "@/src/shared/components/componentView/componentView";
 import CommonSearchInput from "@/src/shared/components/search/commonSearchInput";
@@ -25,17 +25,17 @@ import Link from "next/link";
 interface orderItem {
   id: number;
   orderStatus: string;
-  shippingType: string,
-  subTotal: number,
-  discountAmount: number,
-  tax: number,
-  shippingFee: number,
-  deliveryFee: number,
-  total: number,
-  isCancelled: boolean,
-  createdAt: Date,
-  updatedAt: Date,
-  customerId: 1
+  shippingType: string;
+  subTotal: number;
+  discountAmount: number;
+  tax: number;
+  shippingFee: number;
+  deliveryFee: number;
+  total: number;
+  isCancelled: boolean;
+  createdAt: Date;
+  updatedAt: Date;
+  customerId: 1;
 }
 
 const OrderListComponent: FC<{}> = () => {
@@ -117,13 +117,16 @@ const OrderListComponent: FC<{}> = () => {
   };
 
   // Function to handle date format
-  const formatDate = useMemo(() => (currentDate: Date) => {
-    if (currentDate) {
-      // const formattedDate = currentDate.toLocaleDateString('en-US', { year: "numeric", month: "long", day: "numeric" });
-      return moment(currentDate).format("MMMM D, YYYY");
-    }
-    return null
-  }, [pageData])
+  const formatDate = useMemo(
+    () => (currentDate: Date) => {
+      if (currentDate) {
+        // const formattedDate = currentDate.toLocaleDateString('en-US', { year: "numeric", month: "long", day: "numeric" });
+        return moment(currentDate).format("MMMM D, YYYY");
+      }
+      return null;
+    },
+    [pageData],
+  );
 
   // initial useeffect to get page data
   useEffect(() => {
@@ -137,7 +140,6 @@ const OrderListComponent: FC<{}> = () => {
         {/* <AddHeaderComponent href={"/admin/drawermenu/products/options/new"} title={"Options List"} buttonTitle={"Add Options"} /> */}
         <AddHeaderComponent title={"Order List"} modalHeader />
         <Stack display={"flex"} justifyContent={"space-between"} alignItems={"center"} direction={"row"} mr={3}>
-
           {/* search view */}
           <div className={orderList.searchView}>
             <CommonSearchInput
@@ -151,14 +153,16 @@ const OrderListComponent: FC<{}> = () => {
 
           {/* Manual order button */}
           <Link href={"manualOrder"}>
-          <Button variant="contained" color="secondary" endIcon={<Add />}>Create Order</Button>
+            <Button variant="contained" color="secondary" endIcon={<Add />}>
+              Create Order
+            </Button>
           </Link>
         </Stack>
 
         {/* List section */}
         <div className={orderList.mainListView}>
           {/* Items table display section */}
-          <TableContainer component={Paper} sx={{ mt: 2 }}>
+          <TableContainer component={Paper} sx={{ mt: 2, height: 430 }}>
             <Table sx={{ minWidth: 700 }} aria-label="customized table">
               {/* Table headers */}
               <TableHead>

@@ -12,7 +12,7 @@ import Switch from "@mui/material/Switch";
 import IconButton from "@mui/material/IconButton";
 
 import "./../../../shared/scss/appbar.scss";
-import discountList from './discountList.module.scss'
+import discountList from "./discountList.module.scss";
 import AddHeaderComponent from "@/src/shared/components/addHeader/addHeaderComponent";
 import ComponentView from "@/src/shared/components/componentView/componentView";
 import CommonSearchInput from "@/src/shared/components/search/commonSearchInput";
@@ -120,7 +120,7 @@ const DiscountListComponent: FC<{}> = () => {
         {/* List section */}
         <div className={discountList.mainListView}>
           {/* Items table display section */}
-          <TableContainer component={Paper} sx={{ mt: 2 }}>
+          <TableContainer component={Paper} sx={{ mt: 2, height: 430 }}>
             <Table sx={{ minWidth: 700 }} aria-label="customized table">
               {/* Table headers */}
               <TableHead>
@@ -149,14 +149,14 @@ const DiscountListComponent: FC<{}> = () => {
                         <Switch readOnly checked={item.isActive} />
                       </TableCell>
                       <TableCell sx={{ color: "black" }} align="center">
-                          <Stack direction={"row"} display={"flex"} justifyContent={"center"} alignItems={"center"}>
-                            <IconButton>
-                              <Edit />
-                            </IconButton>
-                            <IconButton>
-                              <Delete />
-                            </IconButton>
-                          </Stack>
+                        <Stack direction={"row"} display={"flex"} justifyContent={"center"} alignItems={"center"}>
+                          <IconButton>
+                            <Edit />
+                          </IconButton>
+                          <IconButton>
+                            <Delete />
+                          </IconButton>
+                        </Stack>
                       </TableCell>
                     </TableRow>
                   );

@@ -12,9 +12,8 @@ import Switch from "@mui/material/Switch";
 import IconButton from "@mui/material/IconButton";
 import CommonToastContainer from "@/src/shared/components/Snackbar/CommonToastContainer";
 
-
 import "./../../../shared/scss/appbar.scss";
-import productListStyle from './productListComponent.module.scss'
+import productListStyle from "./productListComponent.module.scss";
 import AddHeaderComponent from "@/src/shared/components/addHeader/addHeaderComponent";
 import ComponentView from "@/src/shared/components/componentView/componentView";
 import CommonSearchInput from "@/src/shared/components/search/commonSearchInput";
@@ -35,17 +34,16 @@ export interface productItem {
   mrpPrice: number;
   stock: number;
   variantCombinationDetails: {
-    "id": number,
-    "combinationName": string,
-    "isDefault": boolean | null,
-    "salesPrice": number,
-    "mrpPrice": number,
-    "stock": number
+    id: number;
+    combinationName: string;
+    isDefault: boolean | null;
+    salesPrice: number;
+    mrpPrice: number;
+    stock: number;
   }[];
 }
 
-const ProductListComponent: FC<{ isRestore?: boolean, isManualOrder?: boolean }> = ({ isRestore, isManualOrder }) => {
-
+const ProductListComponent: FC<{ isRestore?: boolean; isManualOrder?: boolean }> = ({ isRestore, isManualOrder }) => {
   // Variable to handle dispatch
   const dispatch = useDispatch<AppDispatch>();
 
@@ -137,7 +135,7 @@ const ProductListComponent: FC<{ isRestore?: boolean, isManualOrder?: boolean }>
   const closeProductModal = () => {
     setProductModal(false);
     setSelectedProduct(null);
-  }
+  };
 
   // initial useeffect to get page data
   useEffect(() => {
@@ -150,7 +148,7 @@ const ProductListComponent: FC<{ isRestore?: boolean, isManualOrder?: boolean }>
     if (selectedProduct) {
       setProductModal(true);
     }
-  }, [selectedProduct])
+  }, [selectedProduct]);
 
   return (
     <React.Fragment>
@@ -169,20 +167,23 @@ const ProductListComponent: FC<{ isRestore?: boolean, isManualOrder?: boolean }>
               }}
             />
           </div>
-          {
-            isManualOrder ? <IconButton sx={{ bgcolor: "purple" }} size="large" onClick={() => dispatch(updateStepper({ index: 2 }))}>
+          {isManualOrder ? (
+            <IconButton sx={{ bgcolor: "purple" }} size="large" onClick={() => dispatch(updateStepper({ index: 2 }))}>
               <ArrowForward htmlColor="white" />
-            </IconButton> : 
-              <Link href={"add"}>
-                <Button sx={{mr:3}} variant="contained" color="secondary" endIcon={<Add />}>Create Product</Button>
-              </Link>
-          }
+            </IconButton>
+          ) : (
+            <Link href={"add"}>
+              <Button sx={{ mr: 3 }} variant="contained" color="secondary" endIcon={<Add />}>
+                Create Product
+              </Button>
+            </Link>
+          )}
         </Stack>
 
         {/* List section */}
         <div className={productListStyle.mainListView}>
           {/* Items table display section */}
-          <TableContainer component={Paper} sx={{ mt: 2 }}>
+          <TableContainer component={Paper} sx={{ mt: 2, height: 430 }}>
             <Table sx={{ minWidth: 700 }} aria-label="customized table">
               {/* Table headers */}
               <TableHead>
@@ -199,7 +200,7 @@ const ProductListComponent: FC<{ isRestore?: boolean, isManualOrder?: boolean }>
               <TableBody>
                 {pageData?.map((item: productItem, index: number) => {
                   // console.log("productItem", item);
-                  let defaultVariant = item.isVariants && item.variantCombinationDetails.find((variant) => variant.isDefault);
+                  let defaultVariant = item.isVariants && item.variantCombinationDetails.find(variant => variant.isDefault);
                   return (
                     <TableRow key={index}>
                       <TableCell sx={{ color: "black" }} align="center">
@@ -222,25 +223,22 @@ const ProductListComponent: FC<{ isRestore?: boolean, isManualOrder?: boolean }>
                         {defaultVariant ? defaultVariant.stock : item.stock}
                       </TableCell>
                       <TableCell sx={{ color: "black" }} align="center">
-                        {isRestore ?
+                        {isRestore ? (
                           <IconButton>
                             <Autorenew htmlColor="coral" />
-                          </IconButton> :
-                          isManualOrder ?
-                            <IconButton onClick={() => setSelectedProduct(item)}>
-                              {defaultVariant ? <ControlPointDuplicate htmlColor="coral" /> : <ControlPoint htmlColor="coral" />}
+                          </IconButton>
+                        ) : isManualOrder ? (
+                          <IconButton onClick={() => setSelectedProduct(item)}>{defaultVariant ? <ControlPointDuplicate htmlColor="coral" /> : <ControlPoint htmlColor="coral" />}</IconButton>
+                        ) : (
+                          <Stack direction={"row"} display={"flex"} justifyContent={"center"} alignItems={"center"}>
+                            <IconButton>
+                              <Edit />
                             </IconButton>
-                            :
-                            <Stack direction={"row"} display={"flex"} justifyContent={"center"} alignItems={"center"}>
-                              <IconButton>
-                                <Edit />
-                              </IconButton>
-                              <IconButton>
-                                <Delete />
-                              </IconButton>
-
-                            </Stack>
-                        }
+                            <IconButton>
+                              <Delete />
+                            </IconButton>
+                          </Stack>
+                        )}
                       </TableCell>
                     </TableRow>
                   );
@@ -264,22 +262,22 @@ const ProductListComponent: FC<{ isRestore?: boolean, isManualOrder?: boolean }>
         </div>
       </ComponentView>
 
-
       {/* Product modal */}
-      <Modal
-        open={productModal}
-        onClose={closeProductModal}
-        sx={{ display: "flex", justifyContent: "center", alignItems: "center" }}
-      >
-        <Box sx={{
-          height: selectedProduct?.isVariants ? 400 : 300, width: 700, position: "absolute",
-          boxShadow: 24,
-          p: 2,
-          bgcolor: "white",
-          overflowY: "scroll"
-        }}>
+      <Modal open={productModal} onClose={closeProductModal} sx={{ display: "flex", justifyContent: "center", alignItems: "center" }}>
+        <Box
+          sx={{
+            height: selectedProduct?.isVariants ? 400 : 300,
+            width: 700,
+            position: "absolute",
+            boxShadow: 24,
+            p: 2,
+            bgcolor: "white",
+            overflowY: "scroll",
+          }}>
           <Stack display={"flex"} justifyContent={"space-between"} alignItems={"center"} direction={"row"}>
-            <Typography variant="h6" color={"black"}>{"Product Details"}</Typography>
+            <Typography variant="h6" color={"black"}>
+              {"Product Details"}
+            </Typography>
             <IconButton onClick={() => closeProductModal()}>
               <Close />
             </IconButton>

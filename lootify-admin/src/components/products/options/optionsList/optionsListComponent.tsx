@@ -23,8 +23,7 @@ import Link from "next/link";
 import CommonToastContainer from "@/src/shared/components/Snackbar/CommonToastContainer";
 import { toast } from "react-toastify";
 
-
-interface optionItem {
+export interface optionItem {
   id: number;
   optionName: String;
   showColors: boolean;
@@ -112,22 +111,22 @@ const OptionsListComponent: FC<{}> = () => {
   const handleDelete = (option: optionItem) => {
     if (option.productOptionMappings.length) {
       toast.error(<Typography>Can't deleted option it is being mapped to some products</Typography>);
-    }
-    else
-    {
+    } else {
       let deleteOption = {
-        optionId : option.id,
-        optionValueIds: option.optionValues.map((item)=>item.id)
-      }
-      console.log("delete option",deleteOption)
-      HttpRoutingService.postMethod("options/deleteOption",deleteOption).then((res)=>{
-        toast.success(<Typography>Option deleted successfully</Typography>);
-        getOptionsList({searchValue:searchValue});
-      }).catch((err)=>{
-      toast.error(<Typography>Something went wrong! Try again</Typography>);
-      })
+        optionId: option.id,
+        optionValueIds: option.optionValues.map(item => item.id),
+      };
+      console.log("delete option", deleteOption);
+      HttpRoutingService.postMethod("options/deleteOption", deleteOption)
+        .then(res => {
+          toast.success(<Typography>Option deleted successfully</Typography>);
+          getOptionsList({ searchValue: searchValue });
+        })
+        .catch(err => {
+          toast.error(<Typography>Something went wrong! Try again</Typography>);
+        });
     }
-  }
+  };
 
   // initial useeffect to get page data
   useEffect(() => {
@@ -138,11 +137,10 @@ const OptionsListComponent: FC<{}> = () => {
   return (
     <React.Fragment>
       <ComponentView>
-      <CommonToastContainer />
+        <CommonToastContainer />
         {/* <AddHeaderComponent href={"/admin/drawermenu/products/options/new"} title={"Options List"} buttonTitle={"Add Options"} /> */}
         <AddHeaderComponent title={"Options List"} modalHeader />
         <Stack display={"flex"} justifyContent={"space-between"} alignItems={"center"} direction={"row"} mr={3}>
-
           {/* search view */}
           <div className={optionsListStyle.searchView}>
             <CommonSearchInput
@@ -156,14 +154,16 @@ const OptionsListComponent: FC<{}> = () => {
 
           {/* Manual order button */}
           <Link href={"options/new"}>
-            <Button variant="contained" color="secondary" endIcon={<Add />}>Create Option</Button>
+            <Button variant="contained" color="secondary" endIcon={<Add />}>
+              Create Option
+            </Button>
           </Link>
         </Stack>
 
         {/* List section */}
         <div className={optionsListStyle.mainListView}>
           {/* Items table display section */}
-          <TableContainer component={Paper} sx={{ mt: 2 }}>
+          <TableContainer component={Paper} sx={{ mt: 2, height: 430 }}>
             <Table sx={{ minWidth: 700 }} aria-label="customized table">
               {/* Table headers */}
               <TableHead>
@@ -200,10 +200,14 @@ const OptionsListComponent: FC<{}> = () => {
                       <TableCell sx={{ color: "black" }} align="center">
                         <Stack direction={"row"} display={"flex"} justifyContent={"center"} alignItems={"center"}>
                           <Link href={`options/${item.id}`}>
-                          <IconButton>
-                            <Edit />
-                          </IconButton></Link>
-                          <IconButton onClick={()=>{handleDelete(item)}}>
+                            <IconButton>
+                              <Edit />
+                            </IconButton>
+                          </Link>
+                          <IconButton
+                            onClick={() => {
+                              handleDelete(item);
+                            }}>
                             <Delete />
                           </IconButton>
                         </Stack>
