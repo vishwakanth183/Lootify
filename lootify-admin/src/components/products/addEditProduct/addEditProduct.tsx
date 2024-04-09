@@ -3,7 +3,7 @@
 import ComponentView from "@/src/shared/components/componentView/componentView";
 import React, { FC, useEffect, useRef, useState } from "react";
 import CommonToastContainer from "@/src/shared/components/Snackbar/CommonToastContainer";
-import { Box, Button, Card, Divider, Grid, IconButton, Modal, Stack, Switch, Typography } from "@mui/material";
+import { Box, Button, Card, CircularProgress, Divider, Grid, IconButton, Modal, Stack, Switch, Typography } from "@mui/material";
 import AddHeaderComponent from "@/src/shared/components/addHeader/addHeaderComponent";
 import { usePathname, useRouter } from "next/navigation";
 import { Formik } from "formik";
@@ -15,7 +15,9 @@ import { Add, Close, Delete, RadioButtonUncheckedOutlined } from "@mui/icons-mat
 import VariantSection from "./variantSection/variantSection";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "@/app/redux/store";
-import { resetProductSlice } from "@/app/redux/slices/product/addEditProductSlice";
+import { resetProductSlice, resetSelectedCombination, resetSelectedOption } from "@/app/redux/slices/product/addEditProductSlice";
+import HttpRoutingService from "@/src/services/axios/httpRoutingService";
+import { toast } from "react-toastify";
 
 interface addEditProductProps {
   add?: boolean;
@@ -25,6 +27,7 @@ interface addEditProductProps {
 }
 
 export interface variantCombinationDetails {
+  id?: number;
   isDefault: boolean;
   combinationName: string;
   optionValueIds: number[];
@@ -37,6 +40,8 @@ export interface variantCombinationDetails {
 
 interface productItem {
   productName: string;
+  optionIds?: any[];
+  removedVariantCombination?: any[];
   imgUrl: string;
   mrpPrice?: number;
   salesPrice?: number;
@@ -47,11 +52,17 @@ interface productItem {
 }
 
 const AddEditProduct: FC<addEditProductProps> = ({ add, edit, id }) => {
+  // Variable to handle editId
+  const editId = id;
+
   // Variable to handle navigation
   const router = useRouter();
 
+  // Vairbale to handle page loader
+  const [loading, setLoading] = useState<boolean>(false);
+
   // Variable to handle addEditProductRef
-  const formRef = useRef();
+  const formRef = useRef<any>();
 
   // Redux utilities
   const dispatch = useDispatch<AppDispatch>();
@@ -59,6 +70,9 @@ const AddEditProduct: FC<addEditProductProps> = ({ add, edit, id }) => {
 
   //   Variable to handle variant modal
   const [openVariantModal, setOpenVariantModal] = useState<boolean>(false);
+
+  // Variant to handle product details
+  const [productDetails, setProductDetails] = useState<productItem>();
 
   // Function to handle back function
   const handleBack = () => {
@@ -91,25 +105,152 @@ const AddEditProduct: FC<addEditProductProps> = ({ add, edit, id }) => {
 
   // Function to handle submit
   const handleSubmit = () => {
-    console.log("addProduct", formRef?.current?.values);
-  }
+    let productData: productItem = formRef?.current?.values;
+
+    if (productData.isVariants) {
+      productData.variantCombinationDetails.length;
+      {
+        productData.variantCombinationDetails.forEach(variant => {
+          // console.log("variant", variant);
+          return {
+            ...variant,
+            actualPrice: Number(variant.actualPrice),
+            salesPrice: Number(variant.salesPrice),
+            mrpPrice: Number(variant.mrpPrice),
+            stock: Number(variant.stock),
+          };
+        });
+      }
+    }
+
+    productData.optionIds = addEditProductSlice.selectedOptions.map(item => item.id);
+
+    if (!editId) {
+      HttpRoutingService.postMethod("product/add", productData)
+        .then(res => {
+          toast.success(<Typography>Product created successfully</Typography>);
+          setTimeout(() => {
+            handleBack();
+          }, 1000);
+        })
+        .catch(err => {
+          toast.error(<Typography>Somethig wrong happened! Try again</Typography>);
+        });
+    } else {
+      let existedIdsBeforeEdit = productDetails?.variantCombinationDetails?.map((variant: any) => variant.id);
+      let currentExistinIds = productData?.variantCombinationDetails?.filter((variant: any) => variant.id);
+      currentExistinIds = currentExistinIds.map((item: any) => item.id);
+      let removedIds = existedIdsBeforeEdit?.filter(item => !currentExistinIds.includes(item));
+
+      // console.log("edited product data", productData);
+      // console.log("existedIdsBeforeEdit", existedIdsBeforeEdit);
+      // console.log("currentExistinIds", currentExistinIds);
+      // console.log("removedIds", removedIds);
+      productData.removedVariantCombination = removedIds;
+      console.log("edit product", productData);
+      HttpRoutingService.postMethod("product/update", productData, { productId: editId })
+        .then(res => {
+          toast.success(<Typography>Product updated successfully</Typography>);
+          setTimeout(() => {
+            handleBack();
+          }, 1000);
+        })
+        .catch(err => {
+          toast.error(<Typography>Somethig wrong happened! Try again</Typography>);
+        });
+    }
+  };
 
   useEffect(() => {
-    console.log("formRef", formRef?.current?.setFieldValue("variantCombinationDetails", addEditProductSlice.selectedVariantCombinations))
-  }, [addEditProductSlice.selectedVariantCombinations])
+    if (formRef.current) {
+      // console.log("addEditProductSlice.selectedVariantCombinations", addEditProductSlice.selectedVariantCombinations);
+      formRef?.current?.setFieldValue("variantCombinationDetails", addEditProductSlice.selectedVariantCombinations);
+    }
+  }, [addEditProductSlice.selectedVariantCombinations]);
 
   // To reset slice on initial page load
   useEffect(() => {
     dispatch(resetProductSlice());
-  }, [])
+  }, []);
+
+  // useEffect to fetch product details
+  useEffect(() => {
+    if (editId) {
+      HttpRoutingService.getMethod("product/getProductDetailById", { productId: editId })
+        .then((res: any) => {
+          // console.log("res of product details", res.data);
+
+          // For normal product
+          // initialValues.productName = res?.data?.productName;
+          // initialValues.imgUrl = res?.data?.imgUrl;
+          // initialValues.isVariants = res?.data?.isVariants;
+          // initialValues.actualPrice = res?.data?.actualPrice;
+          // initialValues.mrpPrice = res?.data?.mrpPrice;
+          // initialValues.salesPrice = res?.data?.salesPrice;
+          // initialValues.stock = res?.data?.stock;
+          if (formRef.current) {
+            formRef.current.setFieldValue("productName", res?.data?.productName);
+            formRef.current.setFieldValue("imgUrl", res?.data?.imgUrl);
+            formRef.current.setFieldValue("isVariants", res?.data?.isVariants);
+            formRef.current.setFieldValue("actualPrice", res?.data?.actualPrice);
+            formRef.current.setFieldValue("mrpPrice", res?.data?.mrpPrice);
+            formRef.current.setFieldValue("salesPrice", res?.data?.salesPrice);
+            formRef.current.setFieldValue("stock", res?.data?.stock);
+          }
+
+          // For variant
+          const selectedOptions = res?.data?.productOptionMappings?.map((optionItem: any) => optionItem.option);
+          const selectedCombinations = res?.data?.variantCombinationDetails?.map((variant: any) => {
+            console.log("variant.isDefault", variant.isDefault, variant.combinationName);
+            return {
+              id: variant.id,
+              isDefault: variant.isDefault,
+              combinationName: variant.combinationName,
+              optionValueIds: JSON.parse(variant.optionValueIds),
+              mrpPrice: variant.mrpPrice,
+              salesPrice: variant.salesPrice,
+              actualPrice: variant.actualPrice,
+              stock: variant.stock,
+            };
+          });
+
+          dispatch(resetSelectedCombination(selectedCombinations));
+          dispatch(resetSelectedOption(selectedOptions));
+          // console.log("initalValues", initialValues);
+          setProductDetails(res.data);
+          setLoading(false);
+          // setTimeout(() => {
+          //   setProductDetails(Object.assign(res.data));
+          // }, 2000);
+
+          // console.log("selectedOptions", selectedOptions);
+          // console.log("selectedCombinations", selectedCombinations);
+        })
+        .catch(err => {
+          // setLoading(false);
+          toast.error(<Typography>Failed to fetch product details</Typography>);
+        });
+    } else {
+      setLoading(false);
+    }
+  }, [editId]);
+
+  // if (editId && !productDetails) {
+  //   return (
+  //     <Box height={"100vh"} width={"100%"} display={"flex"} alignItems={"center"} justifyContent={"center"}>
+  //       <CircularProgress />
+  //     </Box>
+  //   );
+  // }
 
   return (
     <React.Fragment>
       <ComponentView>
         {/* <ToastContainerWrapper /> */}
+        {/* {console.log("initialValues", initialValues)} */}
         <CommonToastContainer />
 
-        <Formik innerRef={formRef} validateOnMount initialValues={initialValues} validationSchema={validationSchema} onSubmit={() => { }}>
+        <Formik innerRef={formRef} validateOnMount initialValues={initialValues} validationSchema={validationSchema} onSubmit={() => {}}>
           {({ values, errors, touched, isValid, dirty, resetForm, setFieldValue, enableReinitialize, handleChange, handleBlur }) => (
             // console.log("values", values),
             <React.Fragment>
@@ -175,8 +316,8 @@ const AddEditProduct: FC<addEditProductProps> = ({ add, edit, id }) => {
                         );
                       })} */}
 
-
                       {values.variantCombinationDetails.map((variant, index) => {
+                        // console.log("variant", variant);
                         return (
                           <Box key={index}>
                             <Card sx={{ mt: 2, mr: 2, p: 2 }}>
@@ -197,7 +338,7 @@ const AddEditProduct: FC<addEditProductProps> = ({ add, edit, id }) => {
                               <Divider />
                               {/* Defualt section */}
                               <Stack direction={"row"} display={"flex"} justifyContent={"flex-end"} alignItems={"center"}>
-                                <Switch onChange={() => setFieldValue(`variantCombinationDetails[${index}].isDefault`, !variant.isDefault)} />
+                                <Switch checked={variant.isDefault} onChange={() => setFieldValue(`variantCombinationDetails[${index}].isDefault`, !variant.isDefault)} />
                                 <Typography>Default</Typography>
                               </Stack>
                               {/* Input section */}

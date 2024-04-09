@@ -214,13 +214,13 @@ const ProductListComponent: FC<{ isRestore?: boolean; isManualOrder?: boolean }>
                         <Switch readOnly checked={item.isVariants} />
                       </TableCell>
                       <TableCell sx={{ color: "black" }} align="center">
-                        {defaultVariant ? defaultVariant.salesPrice : item.salesPrice}
+                        ₹{defaultVariant ? defaultVariant.salesPrice : item.salesPrice}
                       </TableCell>
                       <TableCell sx={{ color: "black" }} align="center">
-                        {defaultVariant ? defaultVariant.mrpPrice : item.mrpPrice}
+                        ₹{defaultVariant ? defaultVariant.mrpPrice : item.mrpPrice}
                       </TableCell>
                       <TableCell sx={{ color: "black" }} align="center">
-                        {defaultVariant ? defaultVariant.stock : item.stock}
+                        ₹{defaultVariant ? defaultVariant.stock : item.stock}
                       </TableCell>
                       <TableCell sx={{ color: "black" }} align="center">
                         {isRestore ? (
@@ -231,9 +231,11 @@ const ProductListComponent: FC<{ isRestore?: boolean; isManualOrder?: boolean }>
                           <IconButton onClick={() => setSelectedProduct(item)}>{defaultVariant ? <ControlPointDuplicate htmlColor="coral" /> : <ControlPoint htmlColor="coral" />}</IconButton>
                         ) : (
                           <Stack direction={"row"} display={"flex"} justifyContent={"center"} alignItems={"center"}>
-                            <IconButton>
-                              <Edit />
-                            </IconButton>
+                            <Link href={`${item.id}`}>
+                              <IconButton>
+                                <Edit />
+                              </IconButton>
+                            </Link>
                             <IconButton>
                               <Delete />
                             </IconButton>

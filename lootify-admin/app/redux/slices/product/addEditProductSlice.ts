@@ -30,7 +30,7 @@ export const addEditProductSlice = createSlice({
     changeSelectedCombination: (state, action: PayloadAction<variantCombinationDetails>) => {
       let newVariantCombination = action.payload;
       let removedItem = state.selectedVariantCombinations.find(item => JSON.stringify(item.optionValueIds) == JSON.stringify(newVariantCombination.optionValueIds));
-      console.log("removedItem",removedItem?.combinationName)
+      console.log("removedItem", removedItem?.combinationName);
       if (removedItem) {
         state.selectedVariantCombinations = state.selectedVariantCombinations.filter(item => JSON.stringify(item.optionValueIds) != JSON.stringify(newVariantCombination.optionValueIds));
       } else {
@@ -38,16 +38,26 @@ export const addEditProductSlice = createSlice({
       }
     },
 
+    // function to set bulk options for edit product
+    resetSelectedOption: (state, action: PayloadAction<optionItem[]>) => {
+      state.selectedOptions = action.payload;
+    },
+
+    // function to set bulk combinations for edit product
+    resetSelectedCombination: (state, action: PayloadAction<variantCombinationDetails[]>) => {
+      state.selectedVariantCombinations = action.payload;
+    },
+
     // reset product slice
-    resetProductSlice : (state)=>{
-      state.selectedOptions=[];
-      state.selectedVariantCombinations=[]
-    }
+    resetProductSlice: state => {
+      state.selectedOptions = [];
+      state.selectedVariantCombinations = [];
+    },
   },
 });
 
 // Extract and export actions
-export const { changeSelectedOption, changeSelectedCombination , resetProductSlice } = addEditProductSlice.actions;
+export const { changeSelectedOption, changeSelectedCombination, resetProductSlice, resetSelectedOption, resetSelectedCombination } = addEditProductSlice.actions;
 export type addEditProductSliceState = ReturnType<typeof addEditProductSlice.reducer>;
 
 // Export the reducer for use in the store

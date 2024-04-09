@@ -17,11 +17,14 @@ import AddHeaderComponent from "@/src/shared/components/addHeader/addHeaderCompo
 import ComponentView from "@/src/shared/components/componentView/componentView";
 import CommonSearchInput from "@/src/shared/components/search/commonSearchInput";
 import HttpRoutingService from "@/src/services/axios/httpRoutingService";
-import { Box, Stack } from "@mui/material";
-import { ArrowForward, Autorenew, Delete, Edit, RadioButtonCheckedOutlined, RadioButtonUncheckedOutlined } from "@mui/icons-material";
+import { Box, Button, Stack, Typography } from "@mui/material";
+import { Add, ArrowForward, Autorenew, Delete, Edit, RadioButtonCheckedOutlined, RadioButtonUncheckedOutlined } from "@mui/icons-material";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "@/app/redux/store";
 import { setCustomerDetails, updateStepper } from "@/app/redux/slices/order/manualOrder";
+import Link from "next/link";
+import CommonToastContainer from "@/src/shared/components/Snackbar/CommonToastContainer";
+import { toast } from "react-toastify";
 
 interface optionItem {
   id: number;
@@ -104,7 +107,7 @@ const CustomerListComponent: FC<{ isManualOrder: boolean }> = ({ isManualOrder }
   };
 
   // Function to handle page list data
-  const getOptionsList = async ({ offset, searchValue }: { offset: number; searchValue: string }) => {
+  const getOptionsList = async ({ offset, searchValue }: { offset?: number; searchValue: string }) => {
     await HttpRoutingService.getMethod("customer/customerList", { offset: page * rowsPerPage, searchText: searchValue, limit: rowsPerPage })
       .then(res => {
         console.log("customerList res", res);
@@ -117,6 +120,18 @@ const CustomerListComponent: FC<{ isManualOrder: boolean }> = ({ isManualOrder }
       });
   };
 
+  // Function to handle delet customer
+  const deleteCustomer = (customerId: any) => {
+    HttpRoutingService.postMethod("customer/delete", { customerId: customerId })
+      .then(() => {
+        toast.success(<Typography>Customer deleted successfully</Typography>);
+        getOptionsList({ searchValue: searchValue });
+      })
+      .catch(() => {
+        toast.error(<Typography>Something went wrong! Try again</Typography>);
+      });
+  };
+
   // initial useeffect to get page data
   useEffect(() => {
     setLoading(true);
@@ -126,6 +141,7 @@ const CustomerListComponent: FC<{ isManualOrder: boolean }> = ({ isManualOrder }
   return (
     <React.Fragment>
       <ComponentView>
+        <CommonToastContainer />
         {/* <AddHeaderComponent href={"/admin/drawermenu/products/options/new"} title={"Options List"} buttonTitle={"Add Options"} /> */}
         {isManualOrder ? <div></div> : <AddHeaderComponent title={"Customer List"} modalHeader />}
 
@@ -139,7 +155,7 @@ const CustomerListComponent: FC<{ isManualOrder: boolean }> = ({ isManualOrder }
         <Stack display={"flex"} direction={"row"} justifyContent={"space-between"} alignItems={"center"}>
           <div className={customerList.searchView}>
             <CommonSearchInput
-              placeholder="Search by customer"
+              placeholder="Search by name, email"
               onChange={event => {
                 handleSearch(event.target.value), setPage(0);
                 // setSearchValue(event.target.value), setPage(0);
@@ -150,7 +166,13 @@ const CustomerListComponent: FC<{ isManualOrder: boolean }> = ({ isManualOrder }
             <IconButton disableTouchRipple disabled={!manualOrderSlice.selectedCustomer} sx={{ bgcolor: "purple" }} size="large" onClick={() => dispatch(updateStepper({ index: 1 }))}>
               <ArrowForward htmlColor="white" />
             </IconButton>
-          ) : null}
+          ) : (
+            <Link href={"allcustomers/new"}>
+              <Button sx={{ mr: 3 }} variant="contained" color="secondary" endIcon={<Add />}>
+                Create Customer
+              </Button>
+            </Link>
+          )}
         </Stack>
 
         {/* List section */}
@@ -205,10 +227,12 @@ const CustomerListComponent: FC<{ isManualOrder: boolean }> = ({ isManualOrder }
                       {!isManualOrder && (
                         <TableCell sx={{ color: "black" }} align="center">
                           <Stack direction={"row"} display={"flex"} justifyContent={"center"} alignItems={"center"}>
-                            <IconButton>
-                              <Edit />
-                            </IconButton>
-                            <IconButton>
+                            <Link href={`allcustomers/${item.id}`}>
+                              <IconButton>
+                                <Edit />
+                              </IconButton>
+                            </Link>
+                            <IconButton onClick={() => deleteCustomer(item.id)}>
                               <Delete />
                             </IconButton>
                           </Stack>

@@ -17,8 +17,9 @@ import AddHeaderComponent from "@/src/shared/components/addHeader/addHeaderCompo
 import ComponentView from "@/src/shared/components/componentView/componentView";
 import CommonSearchInput from "@/src/shared/components/search/commonSearchInput";
 import HttpRoutingService from "@/src/services/axios/httpRoutingService";
-import { Box, Stack } from "@mui/material";
-import { Autorenew, Delete, Edit } from "@mui/icons-material";
+import { Box, Button, Stack } from "@mui/material";
+import { Add, Autorenew, Delete, Edit } from "@mui/icons-material";
+import Link from "next/link";
 
 interface optionItem {
   id: number;
@@ -107,15 +108,23 @@ const DiscountListComponent: FC<{}> = () => {
       <ComponentView>
         {/* <AddHeaderComponent href={"/admin/drawermenu/products/options/new"} title={"Options List"} buttonTitle={"Add Options"} /> */}
         <AddHeaderComponent title={"Discounts List"} modalHeader />
-        <div className={discountList.searchView}>
-          <CommonSearchInput
-            placeholder="Search by option name"
-            onChange={event => {
-              handleSearch(event.target.value), setPage(0);
-              // setSearchValue(event.target.value), setPage(0);
-            }}
-          />
-        </div>
+
+        <Stack display={"flex"} direction={"row"} justifyContent={"space-between"} alignItems={"center"}>
+          <div className={discountList.searchView}>
+            <CommonSearchInput
+              placeholder="Search by promocode"
+              onChange={event => {
+                handleSearch(event.target.value), setPage(0);
+                // setSearchValue(event.target.value), setPage(0);
+              }}
+            />
+          </div>
+          <Link href={"new"}>
+            <Button sx={{ mr: 3 }} variant="contained" color="secondary" endIcon={<Add />}>
+              Create Discount
+            </Button>
+          </Link>
+        </Stack>
 
         {/* List section */}
         <div className={discountList.mainListView}>
@@ -150,9 +159,11 @@ const DiscountListComponent: FC<{}> = () => {
                       </TableCell>
                       <TableCell sx={{ color: "black" }} align="center">
                         <Stack direction={"row"} display={"flex"} justifyContent={"center"} alignItems={"center"}>
-                          <IconButton>
-                            <Edit />
-                          </IconButton>
+                          <Link href={`${item.id}`}>
+                            <IconButton>
+                              <Edit />
+                            </IconButton>
+                          </Link>
                           <IconButton>
                             <Delete />
                           </IconButton>

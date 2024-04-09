@@ -16,7 +16,7 @@ const FormikCheckBox: React.FC<FormikCheckBoxProp & CheckboxProps> = ({ name, la
 
   return (
     <FormControlLabel
-    sx={{color:"black"}}
+      sx={{ color: "black" }}
       control={
         <Field
           as={Checkbox} // Integrate Field component for Formik integration
@@ -25,7 +25,7 @@ const FormikCheckBox: React.FC<FormikCheckBoxProp & CheckboxProps> = ({ name, la
           label={label}
           required={required}
           error={error ? true : undefined}
-          helperText={error}
+          helpertext={error ? error : ""}
           margin="normal" // Adjust margin as needed for MUI styling
           {...props} // Pass any additional props to the TextField
         />

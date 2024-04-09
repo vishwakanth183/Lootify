@@ -22,6 +22,7 @@ const FormikInput: React.FC<FormikInputProp & TextFieldProps> = ({ name, label, 
       name={name}
       id={name}
       label={label}
+      InputLabelProps={{ shrink: true }} // Shrink label on focus
       required={required}
       error={error ? true : undefined}
       helperText={error}

@@ -17,7 +17,7 @@ import AddHeaderComponent from "@/src/shared/components/addHeader/addHeaderCompo
 import ComponentView from "@/src/shared/components/componentView/componentView";
 import CommonSearchInput from "@/src/shared/components/search/commonSearchInput";
 import HttpRoutingService from "@/src/services/axios/httpRoutingService";
-import { Box, Button, Stack } from "@mui/material";
+import { Box, Button, Chip, Stack } from "@mui/material";
 import { Add, Autorenew, Delete, Edit, HdrPlus } from "@mui/icons-material";
 import moment from "moment";
 import Link from "next/link";
@@ -143,7 +143,7 @@ const OrderListComponent: FC<{}> = () => {
           {/* search view */}
           <div className={orderList.searchView}>
             <CommonSearchInput
-              placeholder="Search by option name"
+              placeholder="Search by order id"
               onChange={event => {
                 handleSearch(event.target.value), setPage(0);
                 // setSearchValue(event.target.value), setPage(0);
@@ -185,10 +185,14 @@ const OrderListComponent: FC<{}> = () => {
                         {index + 1}
                       </TableCell>
                       <TableCell sx={{ color: "black" }} align="center">
-                        {item.id}
+                        #{item.id}
                       </TableCell>
                       <TableCell sx={{ color: "black" }} align="center">
-                        {item.orderStatus}
+                        <Chip
+                          sx={{ width: 100 }}
+                          label={item.orderStatus}
+                          color={item.orderStatus == "Ordered" ? "primary" : item.orderStatus == "Processing" ? "warning" : item.orderStatus == "Delivered" ? "success" : "error"}
+                        />
                       </TableCell>
                       <TableCell sx={{ color: "black" }} align="center">
                         {item.total}

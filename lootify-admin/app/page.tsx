@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useEffect } from "react";
-import { useMediaQuery } from "@mui/material";
+import { Box, useMediaQuery } from "@mui/material";
 import Image from "next/image";
 
 import "../src/shared/scss/commonStyles.scss";
@@ -20,19 +20,21 @@ const LootifyRootPage = () => {
   useEffect(() => {
     const changeRouteTimeout = setTimeout(() => {
       router.replace("/admin/drawermenu/dashboard");
-    });
+    }, 2000);
     return () => clearTimeout(changeRouteTimeout);
   }, []);
 
   return (
     <div className={"main primaryBackground"}>
-      <Image
-        alt="Logo"
-        src={require("../src/assets/images/applogo.svg")}
-        className={"mobileSplash"}
-        // className={isDesktop ? "desktopSplash" : "mobileSplash"}
-      />
-      <h1 className="whitetext">Lootify</h1>
+      <Box display={"flex"} justifyContent={"center"} alignItems={"flex-end"}>
+        <Image
+          alt="Logo"
+          src={require("../src/assets/images/applogo.svg")}
+          className={"mobileSplash"}
+          // className={isDesktop ? "desktopSplash" : "mobileSplash"}
+        />
+        <h1 className="whitetext">Lootify</h1>
+      </Box>
     </div>
   );
 };

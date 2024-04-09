@@ -110,7 +110,7 @@ const OptionsListComponent: FC<{}> = () => {
   // Function to handle option delete
   const handleDelete = (option: optionItem) => {
     if (option.productOptionMappings.length) {
-      toast.error(<Typography>Can't deleted option it is being mapped to some products</Typography>);
+      toast.error(<Typography>Can't delete option it is being mapped to some products</Typography>);
     } else {
       let deleteOption = {
         optionId: option.id,

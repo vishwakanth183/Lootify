@@ -8,7 +8,7 @@ class httpRoutingService {
     return axiosInstance.get(hostUrl + url, { params: queryParams });
   }
   /** Post method Function which is used for post method */
-  postMethod(url: string, data: any, queryParams: boolean = false) {
+  postMethod(url: string, data: any, queryParams?: any) {
     return axiosInstance.post(hostUrl + url, data, {
       params: queryParams,
     });
